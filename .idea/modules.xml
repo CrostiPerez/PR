@@ -2,8 +2,10 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/QRCodeEjemplo.iml" filepath="$PROJECT_DIR$/QRCodeEjemplo.iml" />
+      <module fileurl="file://C:\Users\escritorio\AndroidStudioProjects\qr-reader\QRCodeEjemplo.iml" filepath="C:\Users\escritorio\AndroidStudioProjects\qr-reader\QRCodeEjemplo.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://C:\Users\escritorio\AndroidStudioProjects\qr-reader\app\app.iml" filepath="C:\Users\escritorio\AndroidStudioProjects\qr-reader\app\app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/qr-reader.iml" filepath="$PROJECT_DIR$/qr-reader.iml" />
     </modules>
   </component>
 </project>

@@ -15,7 +15,7 @@ import com.google.android.gms.vision.barcode.Barcode;
 public class MainActivity extends AppCompatActivity {
     Button btnScan;
     TextView txtResult;
-    public static final int REQUEST_CODE = 100;
+    public static final int REQUEST_COoDE = 100;
     public static final int PERMISSION_REQUEST= 200;
 
     @Override
@@ -31,14 +31,14 @@ public class MainActivity extends AppCompatActivity {
            @Override
            public void onClick(View v) {
                Intent intent = new Intent(MainActivity.this, ScanActivity.class);
-               startActivityForResult(intent, REQUEST_CODE);
+               startActivityForResult(intent, REQUEST_COoDE);
            }
         });
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_CODE && resultCode == RESULT_OK) {
+        if (requestCode == REQUEST_COoDE && resultCode == RESULT_OK) {
             if (data != null) {
                 final Barcode barcode =data.getParcelableExtra("barcode");
                 txtResult.post(new Runnable() {
