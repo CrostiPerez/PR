@@ -42,7 +42,7 @@ public class ScanActivity extends AppCompatActivity {
                 .setFacing(CameraSource.CAMERA_FACING_BACK)
                 .setRequestedFps(24)
                 .setAutoFocusEnabled(true)
-                .setRequestedPreviewSize(1920, 1024)
+                .setRequestedPreviewSize(200, 200)
                 .build();
         cameraView.getHolder().addCallback(new SurfaceHolder.Callback() {
             @Override
@@ -63,7 +63,7 @@ public class ScanActivity extends AppCompatActivity {
 
             @Override
             public void surfaceDestroyed(SurfaceHolder holder) {
-
+                onFinish();
             }
         });
 
@@ -81,16 +81,13 @@ public class ScanActivity extends AppCompatActivity {
                     intent.putExtra("barcode", barcodes.valueAt(0));
                     setResult(RESULT_OK, intent);
                     finish();
-                    onFinish();
                 }
             }
         });
-
     }
 
     public void onFinish(){
         Intent intent = new Intent(ScanActivity.this, Cronometro.class);
-        startActivityForResult(intent, REQUEST_COoDE);
+        startActivity(intent);
     }
-
 }

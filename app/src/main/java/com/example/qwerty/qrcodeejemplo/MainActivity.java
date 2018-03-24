@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
            @Override
            public void onClick(View v) {
                Intent intent = new Intent(MainActivity.this, ScanActivity.class);
-               startActivityForResult(intent, REQUEST_COoDE);
+               startActivity(intent);
            }
         });
     }
