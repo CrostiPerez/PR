@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/activity_main"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:paddingTop="16dp"
+    android:paddingBottom="16dp"
+    android:screenOrientation="portrait"
+    tools:context=".MainActivity">
+
+    <TextView
+        android:id="@+id/cronometroLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:text="Proceso"
+        android:textSize="25sp" />
+
+    <Chronometer
+        android:id="@+id/Cronometro"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:textSize="50sp" />
+
+    <TextView
+        android:id="@+id/tiempoFinalLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/Cronometro"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp"
+        android:text="finalTime"
+        android:textSize="25sp" />
+
+    <TextView
+        android:id="@+id/tiempoFinal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/tiempoFinalLabel"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="49dp"
+        android:text="finalTimeResult" />
+
+    <ImageButton
+        android:id="@+id/playPause"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/stop"
+        android:layout_toLeftOf="@+id/tiempoFinalLabel"
+        android:layout_toStartOf="@+id/tiempoFinalLabel"
+        android:contentDescription="playPauseButton"
+        android:src="@drawable/ic_play_arrow_black_24dp" />
+
+    <ImageButton
+        android:id="@+id/stop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/cronometroLabel"
+        android:layout_marginTop="26dp"
+        android:layout_toEndOf="@+id/tiempoFinalLabel"
+        android:layout_toRightOf="@+id/tiempoFinalLabel"
+        android:contentDescription="stopButton"
+        android:src="@drawable/ic_stop_black_24dp" />
+
+    <ImageButton
+        android:id="@+id/death"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/Cronometro"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="15dp"
+        android:contentDescription="deathButton"
+        android:src="@drawable/ic_sentiment_very_dissatisfied_black_24dp" />
+
+</RelativeLayout>

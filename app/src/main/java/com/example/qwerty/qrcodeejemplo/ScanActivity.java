@@ -2,11 +2,10 @@ package com.example.qwerty.qrcodeejemplo;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.SparseArray;
-import android.util.SparseBooleanArray;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.widget.Toast;
@@ -23,12 +22,13 @@ public class ScanActivity extends AppCompatActivity {
     BarcodeDetector barcodeDetector;
     CameraSource cameraSource;
     SurfaceHolder surfaceHolder;
+    public static final int REQUEST_COoDE = 100;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scan);
-        cameraView = (SurfaceView) findViewById(R.id.cameraView);
+        cameraView = findViewById(R.id.cameraView);
         cameraView.setZOrderMediaOverlay(true);
         surfaceHolder = cameraView.getHolder();
         barcodeDetector = new BarcodeDetector.Builder(this)
@@ -81,8 +81,16 @@ public class ScanActivity extends AppCompatActivity {
                     intent.putExtra("barcode", barcodes.valueAt(0));
                     setResult(RESULT_OK, intent);
                     finish();
+                    onFinish();
                 }
             }
         });
+
     }
+
+    public void onFinish(){
+        Intent intent = new Intent(ScanActivity.this, Cronometro.class);
+        startActivityForResult(intent, REQUEST_COoDE);
+    }
+
 }
