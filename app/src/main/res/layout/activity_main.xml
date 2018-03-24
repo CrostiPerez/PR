@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    android:id="@+id/activity_main"
+<RelativeLayout android:id="@+id/activity_main"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -9,24 +8,55 @@
     android:paddingRight="16dp"
     android:paddingTop="16dp"
     android:paddingBottom="16dp"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <Button
-        android:id="@+id/btnScan"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:text="SCAN" />
+    <LinearLayout
+        android:layout_width="368dp"
+        android:layout_height="495dp"
+        android:orientation="vertical"
+        tools:layout_editor_absoluteX="8dp"
+        tools:layout_editor_absoluteY="8dp">
 
-    <TextView
-        android:id="@+id/txtResult"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/btnScan"
-        android:textSize="25dp"
-        android:padding="5dp"
-        android:gravity="center_horizontal"
-        android:layout_marginTop="10dp"/>
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="12dp" />
 
+        <ImageView
+            android:id="@+id/imageView3"
+            android:layout_width="match_parent"
+            android:layout_height="97dp"
+            app:srcCompat="@drawable/pr" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="99dp" />
+
+        <Button
+            android:id="@+id/btnProceso"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="proceso" />
+        <TextView
+            android:id="@+id/txtResult"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/btnScan"
+            android:textSize="25dp"
+            android:padding="5dp"
+            android:gravity="center_horizontal"
+            android:layout_marginTop="10dp"/>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="64dp" />
+
+        <Button
+            android:id="@+id/button2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="consulta" />
+
+    </LinearLayout>
 </RelativeLayout>
+
