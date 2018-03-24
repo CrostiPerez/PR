@@ -139,7 +139,7 @@ public class Cronometro extends AppCompatActivity {
                 playPause.setImageDrawable(getDrawable(ic_play_arrow_black_24dp));
                 chronometer.stop();
                 result = (String) chronometer.getContentDescription();
-                finalTime.setText("La pieza murio al tiempo: \n" + result);
+                finalTime.setText("La pieza murioo al tiempo: \n" + result);
                 finalTime.setTextColor(RED);
                 finalTime.setAlpha(1.0f);
                 isPlay = false;
