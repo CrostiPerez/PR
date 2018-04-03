@@ -14,15 +14,22 @@ import com.google.android.gms.vision.CameraSource;
 import com.google.android.gms.vision.Detector;
 import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.gms.vision.barcode.BarcodeDetector;
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.JsonHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
+
+import org.json.JSONArray;
+import org.json.JSONException;
 
 import java.io.IOException;
+
+import cz.msebera.android.httpclient.Header;
 
 public class ScanActivity extends AppCompatActivity {
     SurfaceView cameraView;
     BarcodeDetector barcodeDetector;
     CameraSource cameraSource;
     SurfaceHolder surfaceHolder;
-    public static final int REQUEST_COoDE = 100;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +70,7 @@ public class ScanActivity extends AppCompatActivity {
 
             @Override
             public void surfaceDestroyed(SurfaceHolder holder) {
-                onFinish();
+
             }
         });
 
@@ -86,8 +93,5 @@ public class ScanActivity extends AppCompatActivity {
         });
     }
 
-    public void onFinish(){
-        Intent intent = new Intent(ScanActivity.this, Cronometro.class);
-        startActivity(intent);
-    }
+
 }

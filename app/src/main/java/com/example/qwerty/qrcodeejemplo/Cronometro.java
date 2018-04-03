@@ -1,5 +1,5 @@
 package com.example.qwerty.qrcodeejemplo;
-import android.content.Intent;
+
 import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
@@ -12,7 +12,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
-import com.google.android.gms.vision.barcode.Barcode;
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
+
+import cz.msebera.android.httpclient.Header;
 
 import static android.content.pm.ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
 import static android.graphics.Color.BLACK;
@@ -22,18 +26,22 @@ import static com.example.qwerty.qrcodeejemplo.R.drawable.ic_play_arrow_black_24
 
 
 public class Cronometro extends AppCompatActivity {
-    public static final int REQUEST_COoDE = 100;
     Chronometer chronometer;
-    TextView finalTime, finalTimeLabel;
+    TextView finalTime, finalTimeLabel, txtName;
     ImageButton playPause, stop, death;
     boolean isPlay = false, restart = false, isDeath =false;
     long cont, contDeath, deathCounter;
     String result;
+    Pieza pieza;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cronometro);
+
+        pieza = Pieza.fromIntent(getIntent());
+        txtName = findViewById(R.id.name);
+        txtName.setText(pieza.getName());
 
         chronometer = (Chronometer)findViewById(R.id.Cronometro);
         playPause = (ImageButton)findViewById(R.id.playPause);
@@ -50,7 +58,7 @@ public class Cronometro extends AppCompatActivity {
 
 
         playPause.setOnClickListener(new View.OnClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+            //@RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
             public void onClick(View view) {
                 if(!isDeath) {
@@ -125,6 +133,12 @@ public class Cronometro extends AppCompatActivity {
                 isPlay = false;
                 isDeath = false;
                 deathCounter = 0;
+
+                RequestParams params = new RequestParams();
+                params.put("id", pieza.getId());
+                long time = SystemClock.elapsedRealtime() - chronometer.getBase();
+                params.put("time", time + pieza.getTime());
+                doSomeNetworking(params);
             }
         });
 
@@ -151,14 +165,18 @@ public class Cronometro extends AppCompatActivity {
         setRequestedOrientation(SCREEN_ORIENTATION_PORTRAIT);
     }
 
-    protected void Result(int requestCode, int resultCode, Intent data) {
-
-        if (requestCode == REQUEST_COoDE && resultCode == RESULT_OK) {
-            if (data != null) {
-                final Barcode barcode =data.getParcelableExtra("barcode");
-                Toast qr = Toast.makeText(getApplicationContext(),barcode.displayValue, Toast.LENGTH_SHORT);
-                qr.show();
+    private void doSomeNetworking(RequestParams params) {
+        AsyncHttpClient client = new AsyncHttpClient();
+        client.post("http://armandoonline.xyz/write.php", params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                Toast.makeText(getApplicationContext(), "Se ha finalizado el proceso", Toast.LENGTH_LONG).show();
             }
-        }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
     }
 }
