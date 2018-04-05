@@ -26,7 +26,8 @@
             android:id="@+id/imageView3"
             android:layout_width="match_parent"
             android:layout_height="97dp"
-            app:srcCompat="@drawable/pr" />
+            app:srcCompat="@drawable/pr"
+            android:contentDescription="@string/PRImage"/>
 
         <Space
             android:layout_width="match_parent"
@@ -36,16 +37,7 @@
             android:id="@+id/btnProceso"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="proceso" />
-        <TextView
-            android:id="@+id/txtResult"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/btnScan"
-            android:textSize="25dp"
-            android:padding="5dp"
-            android:gravity="center_horizontal"
-            android:layout_marginTop="10dp"/>
+            android:text="@string/processButton" />
 
         <Space
             android:layout_width="match_parent"
@@ -55,7 +47,7 @@
             android:id="@+id/button2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="consulta" />
+            android:text="@string/consultButton" />
 
     </LinearLayout>
 </RelativeLayout>

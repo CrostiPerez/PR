@@ -1,3 +1,17 @@
 <resources>
     <string name="app_name">QR Code Ejemplo</string>
+
+    <!--Activity main-->
+    <string name="PRImage">PR</string>
+    <string name="processButton">Proceso</string>
+    <string name="consultButton">Consulta</string>
+
+    <!--Cronometro-->
+    <string name="title">Proceso</string>
+    <string name="pieceName">Pieza</string>
+    <string name="finalTimeLabel">Tiempo final</string>
+    <string name="finalTime">Tiempo final resultado</string>
+    <string name="playPauseButton">PlayPause</string>
+    <string name="stopButton">Stop</string>
+    <string name="deathButton">Death</string>
 </resources>
