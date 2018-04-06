@@ -43,12 +43,12 @@ public class Cronometro extends AppCompatActivity {
         txtName = findViewById(R.id.name);
         txtName.setText(pieza.getName());
 
-        chronometer = (Chronometer)findViewById(R.id.Cronometro);
-        playPause = (ImageButton)findViewById(R.id.playPause);
-        stop = (ImageButton)findViewById(R.id.stop);
-        finalTime = (TextView)findViewById(R.id.tiempoFinal);
-        finalTimeLabel = (TextView)findViewById(R.id.tiempoFinalLabel);
-        death = (ImageButton) findViewById(R.id.death);
+        chronometer = findViewById(R.id.Cronometro);
+        playPause = findViewById(R.id.playPause);
+        stop = findViewById(R.id.stop);
+        finalTime = findViewById(R.id.tiempoFinal);
+        finalTimeLabel = findViewById(R.id.tiempoFinalLabel);
+        death = findViewById(R.id.death);
 
         playPause.setEnabled(true);
         stop.setEnabled(false);
@@ -59,6 +59,7 @@ public class Cronometro extends AppCompatActivity {
 
         playPause.setOnClickListener(new View.OnClickListener() {
             //@RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
             public void onClick(View view) {
                 if(!isDeath) {
