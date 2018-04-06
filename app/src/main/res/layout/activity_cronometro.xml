@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+<android.support.constraint.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/activity_main"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
@@ -16,81 +16,112 @@
         android:id="@+id/cronometroLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
+        android:layout_marginEnd="10dp"
+        android:layout_marginRight="10dp"
         android:text="@string/title"
-        android:textSize="25sp" />
-
-    <Chronometer
-        android:id="@+id/Cronometro"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:textSize="50sp" />
-
-    <TextView
-        android:id="@+id/tiempoFinalLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/Cronometro"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="15dp"
-        android:text="@string/finalTimeLabel"
-        android:textSize="25sp" />
-
-    <TextView
-        android:id="@+id/tiempoFinal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/tiempoFinalLabel"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="49dp"
-        android:text="@string/finalTime" />
-
-    <ImageButton
-        android:id="@+id/playPause"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/stop"
-        android:layout_toLeftOf="@+id/tiempoFinalLabel"
-        android:layout_toStartOf="@+id/tiempoFinalLabel"
-        android:contentDescription="@string/playPauseButton"
-        android:src="@drawable/ic_play_arrow_black_24dp" />
-
-    <ImageButton
-        android:id="@+id/stop"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/cronometroLabel"
-        android:layout_marginTop="26dp"
-        android:layout_toEndOf="@+id/tiempoFinalLabel"
-        android:layout_toRightOf="@+id/tiempoFinalLabel"
-        android:contentDescription="@string/stopButton"
-        android:src="@drawable/ic_stop_black_24dp" />
-
-    <ImageButton
-        android:id="@+id/death"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/Cronometro"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="15dp"
-        android:contentDescription="@string/deathButton"
-        android:src="@drawable/ic_sentiment_very_dissatisfied_black_24dp" />
+        android:textSize="25sp"
+        app:layout_constraintEnd_toStartOf="@+id/name"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:layout_toEndOf="@+id/cronometroLabel"
-        android:layout_toRightOf="@+id/cronometroLabel"
-        android:text="@string/pieceName"
+        android:layout_marginLeft="10dp"
+        android:layout_marginStart="10dp"
         android:gravity="end"
-        android:textSize="25sp" />
+        android:text="@string/pieceName"
+        android:textSize="25sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/cronometroLabel"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/cronometroLabel"
+        app:layout_constraintTop_toTopOf="parent" />
 
-</RelativeLayout>
+    <Chronometer
+        android:id="@+id/Cronometro"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="50sp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <TextView
+        android:id="@+id/tiempoFinalLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="15dp"
+        android:text="@string/finalTimeLabel"
+        android:textSize="25sp"
+        app:layout_constraintBottom_toTopOf="@+id/tiempoFinal"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/Cronometro" />
+
+    <TextView
+        android:id="@+id/tiempoFinal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="80dp"
+        android:text="@string/finalTime"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <ImageButton
+        android:id="@+id/playPause"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:contentDescription="@string/playPauseButton"
+        android:src="@drawable/ic_play_arrow_black_24dp"
+        app:layout_constraintBottom_toTopOf="@+id/death"
+        app:layout_constraintEnd_toStartOf="@+id/stop"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cronometroLabel" />
+
+    <ImageButton
+        android:id="@+id/stop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="92dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="92dp"
+        android:layout_marginTop="8dp"
+        android:contentDescription="@string/stopButton"
+        android:src="@drawable/ic_stop_black_24dp"
+        app:layout_constraintBottom_toTopOf="@+id/death"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/playPause"
+        app:layout_constraintTop_toBottomOf="@+id/name" />
+
+    <ImageButton
+        android:id="@+id/death"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="140dp"
+        android:contentDescription="@string/deathButton"
+        android:src="@drawable/ic_sentiment_very_dissatisfied_black_24dp"
+        app:layout_constraintBottom_toTopOf="@+id/Cronometro"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</android.support.constraint.ConstraintLayout>
