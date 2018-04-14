@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -17,6 +18,9 @@ import com.loopj.android.http.RequestParams;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
+import org.json.JSONStringer;
+import org.json.JSONTokener;
 
 import cz.msebera.android.httpclient.Header;
 
@@ -75,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void doSomeNetworking(RequestParams params) {
         AsyncHttpClient client = new AsyncHttpClient();
-        client.get("http://armandoonline.xyz/qr-prueba.php", params, new JsonHttpResponseHandler() {
+        client.get("https://www.prcalibradores.com/plattform/DataBase/qr-prueba.php", params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
                 super.onSuccess(statusCode, headers, response);
@@ -84,9 +88,10 @@ public class MainActivity extends AppCompatActivity {
                     if (response.length() == 1) {
                         pieza = Pieza.fromJSON(response.getJSONObject(0));
                         Intent intent = new Intent(getApplicationContext(), Cronometro.class);
-                        intent.putExtra("name", pieza.getName());
-                        intent.putExtra("id", pieza.getId());
-                        intent.putExtra("time", pieza.getTime());
+                        intent.putExtra("piece_id", pieza.getId());
+                        intent.putExtra("model_id", pieza.getModel_id());
+                        intent.putExtra("piece_name", pieza.getName());
+                        intent.putExtra("piece_processes", pieza.getProcesses().toString());
                         startActivity(intent);
                         finish();
                     }

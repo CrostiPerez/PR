@@ -137,8 +137,11 @@ public class Cronometro extends AppCompatActivity {
 
                 RequestParams params = new RequestParams();
                 params.put("id", pieza.getId());
+
+                params.put("staff_id", "1");
+                params.put("process_id", "1");
                 long time = SystemClock.elapsedRealtime() - chronometer.getBase();
-                params.put("time", time + pieza.getTime());
+                params.put("time", time);
                 doSomeNetworking(params);
             }
         });
@@ -168,7 +171,7 @@ public class Cronometro extends AppCompatActivity {
 
     private void doSomeNetworking(RequestParams params) {
         AsyncHttpClient client = new AsyncHttpClient();
-        client.post("http://armandoonline.xyz/write.php", params, new AsyncHttpResponseHandler() {
+        client.post("https://www.prcalibradores.com/plattform/DataBase/write.php", params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 Toast.makeText(getApplicationContext(), "Se ha finalizado el proceso", Toast.LENGTH_LONG).show();
