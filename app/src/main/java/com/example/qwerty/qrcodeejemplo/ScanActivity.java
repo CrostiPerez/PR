@@ -49,7 +49,7 @@ public class ScanActivity extends AppCompatActivity {
                 .setFacing(CameraSource.CAMERA_FACING_BACK)
                 .setRequestedFps(24)
                 .setAutoFocusEnabled(true)
-                .setRequestedPreviewSize(1920, 1024)
+                .setRequestedPreviewSize(200, 200)
                 .build();
         cameraView.getHolder().addCallback(new SurfaceHolder.Callback() {
             @Override
