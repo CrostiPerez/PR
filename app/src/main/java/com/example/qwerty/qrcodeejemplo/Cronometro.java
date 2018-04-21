@@ -45,6 +45,7 @@ public class Cronometro extends AppCompatActivity {
         setContentView(R.layout.activity_cronometro);
 
         pieza = Pieza.fromIntent(getIntent());
+        Toast.makeText(this, pieza.getMuertes() + "", Toast.LENGTH_SHORT).show();
         txtName = findViewById(R.id.name);
         txtName.setText(pieza.getName());
 
@@ -131,6 +132,11 @@ public class Cronometro extends AppCompatActivity {
                 death.setEnabled(false);
                 result = (String) chronometer.getContentDescription();
                 finalTime.setText(result + "\nLa pieza murio " + deathCounter + " veces.");
+
+                RequestParams params = new RequestParams();
+                params.put("muertes", deathCounter + pieza.getMuertes());
+                Toast.makeText(getApplicationContext(), pieza.getMuertes() + "", Toast.LENGTH_SHORT).show();
+
                 finalTime.setTextColor(BLACK);
                 finalTime.setAlpha(1.0f);
                 finalTimeLabel.setAlpha(1.0f);
@@ -141,7 +147,6 @@ public class Cronometro extends AppCompatActivity {
                 deathCounter = 0;
 
                 long time = SystemClock.elapsedRealtime() - chronometer.getBase();
-                RequestParams params = new RequestParams();
                 params.put("id", pieza.getId());
                 try {
                     JSONObject proceso = new JSONObject();

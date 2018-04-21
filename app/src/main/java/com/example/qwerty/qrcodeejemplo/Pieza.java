@@ -16,12 +16,14 @@ public class Pieza {
     private int model_id;
     private String name;
     private JSONArray processes;
+    private int muertes;
 
-    public Pieza(int id, int model_id, String name, JSONArray processes) {
+    public Pieza(int id, int model_id, String name, JSONArray processes, int muertes) {
         this.id = id;
         this.name = name;
         this.model_id = model_id;
         this.processes = processes;
+        this.muertes = muertes;
     }
 
     public Pieza() {
@@ -33,7 +35,8 @@ public class Pieza {
             Pieza pieza = new Pieza(jsonObject.getInt("piece_id"),
                     jsonObject.getInt("model_id"),
                     jsonObject.getString("piece_name"),
-                    new JSONArray(jsonObject.getString("piece_processes"))
+                    new JSONArray(jsonObject.getString("piece_processes")),
+                    jsonObject.getInt("muertes")
             );
             return pieza;
         } catch (JSONException e) {
@@ -47,7 +50,8 @@ public class Pieza {
             return new Pieza(intent.getIntExtra("piece_id", 0),
                     intent.getIntExtra("model_id", 0),
                     intent.getStringExtra("piece_name"),
-                    new JSONArray(intent.getStringExtra("piece_processes"))
+                    new JSONArray(intent.getStringExtra("piece_processes")),
+                    intent.getIntExtra("muertes", 0)
             );
         } catch (Exception e) {
             e.printStackTrace();
@@ -72,4 +76,6 @@ public class Pieza {
     }
 
     public void setProcesses(JSONArray processes) { this.processes = processes; }
+
+    public int getMuertes() { return this.muertes; }
 }
