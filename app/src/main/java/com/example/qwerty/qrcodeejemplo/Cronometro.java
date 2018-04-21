@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Chronometer;
 import android.widget.ImageButton;
@@ -15,6 +16,10 @@ import android.widget.Toast;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import cz.msebera.android.httpclient.Header;
 
@@ -135,13 +140,18 @@ public class Cronometro extends AppCompatActivity {
                 isDeath = false;
                 deathCounter = 0;
 
+                long time = SystemClock.elapsedRealtime() - chronometer.getBase();
                 RequestParams params = new RequestParams();
                 params.put("id", pieza.getId());
-
-                params.put("staff_id", "1");
-                params.put("process_id", "1");
-                long time = SystemClock.elapsedRealtime() - chronometer.getBase();
-                params.put("time", time);
+                try {
+                    JSONObject proceso = new JSONObject();
+                    proceso.put("process_id", 4);
+                    proceso.put("staff_id", 10154784);
+                    proceso.put("time", time);
+                    params.put("json", proceso.toString());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
                 doSomeNetworking(params);
             }
         });
@@ -171,7 +181,7 @@ public class Cronometro extends AppCompatActivity {
 
     private void doSomeNetworking(RequestParams params) {
         AsyncHttpClient client = new AsyncHttpClient();
-        client.post("https://www.prcalibradores.com/plattform/DataBase/write.php", params, new AsyncHttpResponseHandler() {
+        client.post("https://www.prcalibradores.com/plattform/DataBase/qr-write.php", params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 Toast.makeText(getApplicationContext(), "Se ha finalizado el proceso", Toast.LENGTH_LONG).show();

@@ -29,6 +29,7 @@ public class Pieza {
 
     public static Pieza fromJSON(JSONObject jsonObject) {
         try {
+            Log.d("PR", "LKJASLKDJALSKJD");
             Pieza pieza = new Pieza(jsonObject.getInt("piece_id"),
                     jsonObject.getInt("model_id"),
                     jsonObject.getString("piece_name"),
@@ -69,4 +70,6 @@ public class Pieza {
     public JSONArray getProcesses() {
         return processes;
     }
+
+    public void setProcesses(JSONArray processes) { this.processes = processes; }
 }
