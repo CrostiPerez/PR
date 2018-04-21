@@ -14,4 +14,15 @@
     <string name="playPauseButton">PlayPause</string>
     <string name="stopButton">Stop</string>
     <string name="deathButton">Death</string>
+
+    <!--Login-->
+    <string name="loginPRImage">PR Image</string>
+    <string name="usernameInputText">Nombre de usuario: </string>
+    <string name="usernameText">Nombre de usuario: </string>
+    <string name="passwordInputText">Contrasena: </string>
+    <string name="passwordText">Contrasena: </string>
+    <string name="loginButton">Entrar </string>
+
+
+
 </resources>
