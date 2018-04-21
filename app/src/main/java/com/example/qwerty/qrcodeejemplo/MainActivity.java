@@ -6,9 +6,9 @@ import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.gms.vision.barcode.Barcode;
@@ -18,14 +18,14 @@ import com.loopj.android.http.RequestParams;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
-import org.json.JSONStringer;
-import org.json.JSONTokener;
 
 import cz.msebera.android.httpclient.Header;
 
+import static android.view.View.VISIBLE;
+
 public class MainActivity extends AppCompatActivity {
     Button btnScan, btnCons;
+    ProgressBar progress;
     public static final int REQUEST_CODE = 100;
     public static final int PERMISSION_REQUEST = 200;
     public static final int CHRONOMETER = 300;
@@ -38,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         btnScan = findViewById(R.id.btnProceso);
         btnCons = findViewById(R.id.btnConsulta);
+        progress = findViewById(R.id.progressBar);
         type = 0;
         if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.CAMERA}, PERMISSION_REQUEST);
@@ -48,11 +49,13 @@ public class MainActivity extends AppCompatActivity {
                Intent intent = new Intent(MainActivity.this, ScanActivity.class);
                startActivityForResult(intent, REQUEST_CODE);
                type = 300;
+               progress.setVisibility(VISIBLE);
            }
         });
         btnCons.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                progress.setVisibility(VISIBLE);
                 Intent intent = new Intent(MainActivity.this, ScanActivity.class);
                 startActivityForResult(intent, REQUEST_CODE);
                 type = 400;
@@ -63,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        progress.setVisibility(View.INVISIBLE);
         if (requestCode == REQUEST_CODE && resultCode == RESULT_OK && type == CHRONOMETER) {
             if (data != null) {
                 final Barcode barcode =data.getParcelableExtra("barcode");

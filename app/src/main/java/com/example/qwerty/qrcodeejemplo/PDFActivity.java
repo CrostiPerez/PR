@@ -4,6 +4,8 @@ import android.annotation.SuppressLint;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.ProgressBar;
 
 import com.github.barteksc.pdfviewer.PDFView;
 
@@ -15,12 +17,13 @@ import java.net.URL;
 
 public class PDFActivity extends AppCompatActivity {
     PDFView pdfView;
+    ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pdf);
-
+        progressBar = findViewById(R.id.progressBar2);
         pdfView = findViewById(R.id.pdf);
         //pdfView.fromAsset("CCA-Certificate-Java Level 1.pdf").load();
         new RetrievePDFStream().execute("https://www.rstudio.com/wp-content/uploads/2015/03/rmarkdown-spanish.pdf");
@@ -45,9 +48,15 @@ public class PDFActivity extends AppCompatActivity {
             return inputStream;
         }
 
-        @Override
+       @Override
+       protected void onPreExecute() {
+
+       }
+
+       @Override
         protected void onPostExecute(InputStream inputStream) {
             pdfView.fromStream(inputStream).load();
+           progressBar.setVisibility(View.GONE);
         }
     }
 }

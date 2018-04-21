@@ -14,22 +14,15 @@ import com.google.android.gms.vision.CameraSource;
 import com.google.android.gms.vision.Detector;
 import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.gms.vision.barcode.BarcodeDetector;
-import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.JsonHttpResponseHandler;
-import com.loopj.android.http.RequestParams;
-
-import org.json.JSONArray;
-import org.json.JSONException;
 
 import java.io.IOException;
-
-import cz.msebera.android.httpclient.Header;
 
 public class ScanActivity extends AppCompatActivity {
     SurfaceView cameraView;
     BarcodeDetector barcodeDetector;
     CameraSource cameraSource;
     SurfaceHolder surfaceHolder;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
