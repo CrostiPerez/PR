@@ -96,6 +96,7 @@ public class MainActivity extends AppCompatActivity {
                         intent.putExtra("model_id", pieza.getModel_id());
                         intent.putExtra("piece_name", pieza.getName());
                         intent.putExtra("piece_processes", pieza.getProcesses().toString());
+                        intent.putExtra("muertes", pieza.getMuertes());
                         startActivity(intent);
                         finish();
                     }
