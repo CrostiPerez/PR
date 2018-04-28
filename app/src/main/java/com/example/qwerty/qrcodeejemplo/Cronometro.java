@@ -5,19 +5,16 @@ import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Chronometer;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -140,6 +137,7 @@ public class Cronometro extends AppCompatActivity {
                 isDeath = false;
                 deathCounter = 0;
 
+
                 long time = SystemClock.elapsedRealtime() - chronometer.getBase();
                 RequestParams params = new RequestParams();
                 params.put("id", pieza.getId());
@@ -153,6 +151,33 @@ public class Cronometro extends AppCompatActivity {
                     e.printStackTrace();
                 }
                 doSomeNetworking(params);
+
+               /* new SweetAlertDialog(Cronometro.this, SweetAlertDialog.WARNING_TYPE)
+                        .setTitleText("¡Atención!")
+                        .setContentText("¿Quieres maquinar una pieza igual?")
+                        .setConfirmText("Sí")
+                        .setCancelText("No")
+                        .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                sweetAlertDialog
+                                        .setTitleText("Siguiente proceso")
+                                        .setContentText("Excelente trabajo. Lleva la pieza terminada")
+                                        .setConfirmText("OK")
+                                        .setConfirmClickListener(null)
+                                        .changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
+                            }
+                        })
+                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                sweetAlertDialog.cancel();
+                                     ActivityCompat.requestPermissions(Cronometro.this,
+                                        new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
+                                        MI_PERMISO_ACCESS_FINE_LOCATION);
+                            }
+                        })
+                        .show();*/
             }
         });
 

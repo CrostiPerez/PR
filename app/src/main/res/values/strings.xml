@@ -22,7 +22,7 @@
     <string name="passwordInputText">Contrasena: </string>
     <string name="passwordText">Contrasena: </string>
     <string name="loginButton">Entrar </string>
-
+    <string name="PR">PR Calibradores</string>
 
 
 </resources>
