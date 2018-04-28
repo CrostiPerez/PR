@@ -43,6 +43,7 @@ public class Login extends AppCompatActivity {
 
     private void doSomeNetworking(RequestParams params) {
         AsyncHttpClient client = new AsyncHttpClient();
+        Toast.makeText(getApplicationContext(), "aqui", Toast.LENGTH_SHORT).show();
         client.post("https://www.prcalibradores.com/plattform/DataBase/login.php", params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {

@@ -18,6 +18,7 @@ import com.loopj.android.http.RequestParams;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import cz.msebera.android.httpclient.Header;
 
 import static android.content.pm.ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
@@ -124,40 +125,7 @@ public class Cronometro extends AppCompatActivity {
             @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
             public void onClick(View view) {
-                playPause.setEnabled(true);
-                stop.setEnabled(false);
-                death.setEnabled(false);
-                result = (String) chronometer.getContentDescription();
-                finalTime.setText(result + "\nLa pieza murio " + deathCounter + " veces.");
-
-                RequestParams params = new RequestParams();
-                params.put("muertes", deathCounter + pieza.getMuertes());
-                Toast.makeText(getApplicationContext(), pieza.getMuertes() + "", Toast.LENGTH_SHORT).show();
-
-                finalTime.setTextColor(BLACK);
-                finalTime.setAlpha(1.0f);
-                finalTimeLabel.setAlpha(1.0f);
-                chronometer.stop();
-                playPause.setImageDrawable(getDrawable(ic_play_arrow_black_24dp));
-                isPlay = false;
-                isDeath = false;
-                deathCounter = 0;
-
-
-                long time = SystemClock.elapsedRealtime() - chronometer.getBase();
-                params.put("id", pieza.getId());
-                try {
-                    JSONObject proceso = new JSONObject();
-                    proceso.put("process_id", 4);
-                    proceso.put("staff_id", 10154784);
-                    proceso.put("time", time);
-                    params.put("json", proceso.toString());
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                doSomeNetworking(params);
-
-               /* new SweetAlertDialog(Cronometro.this, SweetAlertDialog.WARNING_TYPE)
+                 new SweetAlertDialog(Cronometro.this, SweetAlertDialog.WARNING_TYPE)
                         .setTitleText("¡Atención!")
                         .setContentText("¿Quieres maquinar una pieza igual?")
                         .setConfirmText("Sí")
@@ -177,12 +145,41 @@ public class Cronometro extends AppCompatActivity {
                             @Override
                             public void onClick(SweetAlertDialog sweetAlertDialog) {
                                 sweetAlertDialog.cancel();
-                                     ActivityCompat.requestPermissions(Cronometro.this,
-                                        new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
-                                        MI_PERMISO_ACCESS_FINE_LOCATION);
                             }
                         })
-                        .show();*/
+                        .show();
+
+                playPause.setEnabled(true);
+                stop.setEnabled(false);
+                death.setEnabled(false);
+                result = (String) chronometer.getContentDescription();
+                finalTime.setText(result + "\nLa pieza murio " + deathCounter + " veces.");
+
+                RequestParams params = new RequestParams();
+                params.put("muertes", deathCounter + pieza.getMuertes());
+                Toast.makeText(getApplicationContext(), pieza.getMuertes() + "", Toast.LENGTH_SHORT).show();
+
+                finalTime.setTextColor(BLACK);
+                finalTime.setAlpha(1.0f);
+                finalTimeLabel.setAlpha(1.0f);
+                chronometer.stop();
+                playPause.setImageDrawable(getDrawable(ic_play_arrow_black_24dp));
+                isPlay = false;
+                isDeath = false;
+                deathCounter = 0;
+
+                long time = SystemClock.elapsedRealtime() - chronometer.getBase();
+                params.put("id", pieza.getId());
+                try {
+                    JSONObject proceso = new JSONObject();
+                    proceso.put("process_id", 4);
+                    proceso.put("staff_id", 10154784);
+                    proceso.put("time", time);
+                    params.put("json", proceso.toString());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                doSomeNetworking(params);
             }
         });
 
