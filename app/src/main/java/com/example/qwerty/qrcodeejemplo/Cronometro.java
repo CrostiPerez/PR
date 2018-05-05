@@ -1,9 +1,11 @@
 package com.example.qwerty.qrcodeejemplo;
 
+import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.annotation.RequiresApi;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Chronometer;
@@ -18,7 +20,6 @@ import com.loopj.android.http.RequestParams;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import cn.pedant.SweetAlert.SweetAlertDialog;
 import cz.msebera.android.httpclient.Header;
 
 import static android.content.pm.ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
@@ -125,29 +126,6 @@ public class Cronometro extends AppCompatActivity {
             @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
             public void onClick(View view) {
-                 new SweetAlertDialog(Cronometro.this, SweetAlertDialog.WARNING_TYPE)
-                        .setTitleText("¡Atención!")
-                        .setContentText("¿Quieres maquinar una pieza igual?")
-                        .setConfirmText("Sí")
-                        .setCancelText("No")
-                        .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                            @Override
-                            public void onClick(SweetAlertDialog sweetAlertDialog) {
-                                sweetAlertDialog
-                                        .setTitleText("Siguiente proceso")
-                                        .setContentText("Excelente trabajo. Lleva la pieza terminada")
-                                        .setConfirmText("OK")
-                                        .setConfirmClickListener(null)
-                                        .changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
-                            }
-                        })
-                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                            @Override
-                            public void onClick(SweetAlertDialog sweetAlertDialog) {
-                                sweetAlertDialog.cancel();
-                            }
-                        })
-                        .show();
 
                 playPause.setEnabled(true);
                 stop.setEnabled(false);
@@ -180,7 +158,32 @@ public class Cronometro extends AppCompatActivity {
                     e.printStackTrace();
                 }
                 doSomeNetworking(params);
-            }
+                    AlertDialog.Builder builder = new AlertDialog.Builder(Cronometro.this, R.style.MyDialogTheme);
+                    builder.setTitle("PR Calibradores");
+                    builder.setMessage("¿Quiere hacer otra pieza igual?");
+
+                    String positiveText = "Sí";
+                    builder.setPositiveButton(positiveText,
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    // positive button logic
+                                }
+                            });
+
+                    String negativeText = "No";
+                    builder.setNegativeButton(negativeText,
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    // negative button logic
+                                }
+                            });
+
+                    AlertDialog dialog = builder.create();
+                    // display dialog
+                    dialog.show();
+                }
         });
 
         death.setOnClickListener(new View.OnClickListener() {
@@ -194,7 +197,7 @@ public class Cronometro extends AppCompatActivity {
                 playPause.setImageDrawable(getDrawable(ic_play_arrow_black_24dp));
                 chronometer.stop();
                 result = (String) chronometer.getContentDescription();
-                finalTime.setText("La pieza murioo al tiempo: \n" + result);
+                finalTime.setText("La pieza murio al tiempo: \n" + result);
                 finalTime.setTextColor(RED);
                 finalTime.setAlpha(1.0f);
                 isPlay = false;
@@ -208,7 +211,7 @@ public class Cronometro extends AppCompatActivity {
 
     private void doSomeNetworking(RequestParams params) {
         AsyncHttpClient client = new AsyncHttpClient();
-        client.post("https://www.prcalibradores.com/plattform/DataBase/qr-write.php", params, new AsyncHttpResponseHandler() {
+        client.post("http://www.prcalibradores.com/plattform/DataBase/qr-write.php", params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 Toast.makeText(getApplicationContext(), "Se ha finalizado el proceso", Toast.LENGTH_LONG).show();

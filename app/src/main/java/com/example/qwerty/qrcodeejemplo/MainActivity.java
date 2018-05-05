@@ -83,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void doSomeNetworking(RequestParams params) {
         AsyncHttpClient client = new AsyncHttpClient();
-        client.get("https://www.prcalibradores.com/plattform/DataBase/qr-prueba.php", params, new JsonHttpResponseHandler() {
+        client.get("http://www.prcalibradores.com/plattform/DataBase/qr-prueba.php", params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
                 super.onSuccess(statusCode, headers, response);

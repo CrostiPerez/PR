@@ -1,8 +1,8 @@
 package com.example.qwerty.qrcodeejemplo;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -43,8 +43,8 @@ public class Login extends AppCompatActivity {
 
     private void doSomeNetworking(RequestParams params) {
         AsyncHttpClient client = new AsyncHttpClient();
-        Toast.makeText(getApplicationContext(), "aqui", Toast.LENGTH_SHORT).show();
-        client.post("https://www.prcalibradores.com/plattform/DataBase/login.php", params, new JsonHttpResponseHandler() {
+
+        client.post("http://www.prcalibradores.com/plattform/DataBase/login.php", params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
                 super.onSuccess(statusCode, headers, response);
