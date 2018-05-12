@@ -69,10 +69,11 @@ public class MainActivity extends AppCompatActivity {
         progress.setVisibility(View.INVISIBLE);
         if (requestCode == REQUEST_CODE && resultCode == RESULT_OK && type == CHRONOMETER) {
             if (data != null) {
-                final Barcode barcode =data.getParcelableExtra("barcode");
+                final Barcode barcode = data.getParcelableExtra("barcode");
                 RequestParams params = new RequestParams();
                 params.put("id", barcode.displayValue);
                 doSomeNetworking(params);
+
             }
         }
         else if(requestCode == REQUEST_CODE && resultCode == RESULT_OK && type == PDF){
@@ -90,8 +91,10 @@ public class MainActivity extends AppCompatActivity {
                 Pieza pieza = null;
                 try {
                     if (response.length() == 1) {
+                        Intent intent = new Intent(MainActivity.this, ProcessesMain.class);
+                        //startActivity(intent2);
                         pieza = Pieza.fromJSON(response.getJSONObject(0));
-                        Intent intent = new Intent(getApplicationContext(), Cronometro.class);
+                        //Intent intent = new Intent(getApplicationContext(), Cronometro.class);
                         intent.putExtra("piece_id", pieza.getId());
                         intent.putExtra("model_id", pieza.getModel_id());
                         intent.putExtra("piece_name", pieza.getName());
