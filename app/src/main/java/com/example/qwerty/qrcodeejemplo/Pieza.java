@@ -1,7 +1,9 @@
 package com.example.qwerty.qrcodeejemplo;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.util.Log;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -31,14 +33,12 @@ public class Pieza {
 
     public static Pieza fromJSON(JSONObject jsonObject) {
         try {
-            Log.d("PR", "LKJASLKDJALSKJD");
-            Pieza pieza = new Pieza(jsonObject.getInt("piece_id"),
+            return new Pieza(jsonObject.getInt("piece_id"),
                     jsonObject.getInt("model_id"),
                     jsonObject.getString("piece_name"),
                     new JSONArray(jsonObject.getString("piece_processes")),
                     jsonObject.getInt("muertes")
             );
-            return pieza;
         } catch (JSONException e) {
             e.printStackTrace();
             return null;

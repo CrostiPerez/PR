@@ -43,17 +43,14 @@ public class Login extends AppCompatActivity {
 
     private void doSomeNetworking(RequestParams params) {
         AsyncHttpClient client = new AsyncHttpClient();
-
-        client.post("http://www.prcalibradores.com/plattform/DataBase/login.php", params, new JsonHttpResponseHandler() {
+        client.post("https://www.prcalibradores.com/app/login.php", params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
                 super.onSuccess(statusCode, headers, response);
                 if(!response.isNull(0)) {
                     Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                     try {
-                        User user = User.fromJSON(response.getJSONObject(0));
-                        intent.putExtra("username", user.getUsername());
-                        intent.putExtra("password", user.getPassword());
+                        intent.putExtra("login_id", response.getJSONObject(0).getString("login_id"));
                         startActivity(intent);
                         finish();
                     } catch(JSONException e) {

@@ -73,7 +73,6 @@ public class MainActivity extends AppCompatActivity {
                 RequestParams params = new RequestParams();
                 params.put("id", barcode.displayValue);
                 doSomeNetworking(params);
-
             }
         }
         else if(requestCode == REQUEST_CODE && resultCode == RESULT_OK && type == PDF){
@@ -84,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void doSomeNetworking(RequestParams params) {
         AsyncHttpClient client = new AsyncHttpClient();
-        client.get("http://www.prcalibradores.com/plattform/DataBase/qr-prueba.php", params, new JsonHttpResponseHandler() {
+        client.get("http://www.prcalibradores.com/app/get-piece.php", params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
                 super.onSuccess(statusCode, headers, response);
@@ -94,12 +93,13 @@ public class MainActivity extends AppCompatActivity {
                         Intent intent = new Intent(MainActivity.this, ProcessesMain.class);
                         //startActivity(intent2);
                         pieza = Pieza.fromJSON(response.getJSONObject(0));
-                        //Intent intent = new Intent(getApplicationContext(), Cronometro.class);
+                        Intent intent = new Intent(getApplicationContext(), Cronometro.class);
                         intent.putExtra("piece_id", pieza.getId());
                         intent.putExtra("model_id", pieza.getModel_id());
                         intent.putExtra("piece_name", pieza.getName());
                         intent.putExtra("piece_processes", pieza.getProcesses().toString());
                         intent.putExtra("muertes", pieza.getMuertes());
+                        intent.putExtra("login_id", getIntent().getStringExtra("login_id"));
                         startActivity(intent);
                         finish();
                     }
