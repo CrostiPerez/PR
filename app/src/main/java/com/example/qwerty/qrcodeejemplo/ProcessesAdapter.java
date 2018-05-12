@@ -15,6 +15,7 @@ public class ProcessesAdapter extends RecyclerView.Adapter<ProcessesAdapter.Proc
     private ArrayList<ProcessesList> processesList;
     private Pieza pieza;
     private Context mContext;
+    private  String id;
 
 
     public class ProcessViewHolder extends RecyclerView.ViewHolder {
@@ -27,9 +28,10 @@ public class ProcessesAdapter extends RecyclerView.Adapter<ProcessesAdapter.Proc
         }
     }
 
-    public ProcessesAdapter(ArrayList<ProcessesList> processesList, Pieza pieza, Context context){
+    public ProcessesAdapter(ArrayList<ProcessesList> processesList, Pieza pieza, String id, Context context){
         this.processesList = processesList;
         this.pieza = pieza;
+        this.id = id;
         this.mContext = context;
     }
 
@@ -55,6 +57,7 @@ public class ProcessesAdapter extends RecyclerView.Adapter<ProcessesAdapter.Proc
                 intent.putExtra("piece_name", pieza.getName());
                 intent.putExtra("piece_processes", pieza.getProcesses().toString());
                 intent.putExtra("muertes", pieza.getMuertes());
+                intent.putExtra("login_id", id);
                 mContext.startActivity(intent);
             }
         });

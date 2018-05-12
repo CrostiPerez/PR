@@ -26,7 +26,7 @@ public class ProcessesMain extends AppCompatActivity {
 
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         mLayoutManager = new LinearLayoutManager(this);
-        adapter = new ProcessesAdapter(prepareData(), pieza, this);
+        adapter = new ProcessesAdapter(prepareData(), pieza, getIntent().getStringExtra("login_id"), this);
 
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setAdapter(adapter);

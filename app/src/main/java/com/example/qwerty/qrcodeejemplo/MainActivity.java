@@ -93,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
                         Intent intent = new Intent(MainActivity.this, ProcessesMain.class);
                         //startActivity(intent2);
                         pieza = Pieza.fromJSON(response.getJSONObject(0));
-                        Intent intent = new Intent(getApplicationContext(), Cronometro.class);
+                        //Intent intent = new Intent(getApplicationContext(), Cronometro.class);
                         intent.putExtra("piece_id", pieza.getId());
                         intent.putExtra("model_id", pieza.getModel_id());
                         intent.putExtra("piece_name", pieza.getName());
