@@ -187,10 +187,8 @@ public class Cronometro extends AppCompatActivity {
                                     newPiece(params);*/
 
                                     Intent intent = new Intent(getApplicationContext(), Cronometro.class);
-                                    startActivity(intent);
-                                    finish();
-                                    finish();
                                     startActivity(getIntent());
+                                    finish();
                                 }
                             });
 
@@ -199,9 +197,6 @@ public class Cronometro extends AppCompatActivity {
                             new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                                    startActivity(intent);
-                                    finish();
                                     finish();
                                 }
                             });
@@ -239,12 +234,12 @@ public class Cronometro extends AppCompatActivity {
         RestClient.post("set-time.php", params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                Toast.makeText(getApplicationContext(), "Se ha finalizado el proceso", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Se ha finalizado el proceso", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                Toast.makeText(getApplicationContext(), error.getMessage() + "errorst", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), error.getMessage() + "errorst", Toast.LENGTH_SHORT).show();
 
             }
         });
@@ -262,13 +257,13 @@ public class Cronometro extends AppCompatActivity {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                Toast.makeText(getApplicationContext(), "Se ha seleccionado el proceso", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Se ha seleccionado el proceso", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                 super.onFailure(statusCode, headers, responseString, throwable);
-                Toast.makeText(getApplicationContext(), throwable.getMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), throwable.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -277,13 +272,13 @@ public class Cronometro extends AppCompatActivity {
         RestClient.post("set-piece.php", params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-                Toast.makeText(getApplicationContext(), "Se ha añadido nueva pieza", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Se ha añadido nueva pieza", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                 super.onFailure(statusCode, headers, responseString, throwable);
-                Toast.makeText(getApplicationContext(), throwable.getMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), throwable.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }

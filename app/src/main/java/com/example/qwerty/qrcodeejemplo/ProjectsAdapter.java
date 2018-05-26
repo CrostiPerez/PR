@@ -7,6 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.qwerty.qrcodeejemplo.model.Piece;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -14,7 +16,7 @@ import java.util.ArrayList;
 public class ProjectsAdapter extends RecyclerView.Adapter<ProjectsAdapter.ProjectsViewHolder>{
 
     private ArrayList<ProjectsList> projectsList;
-    private Pieza pieza;
+    private Piece pieza;
     private Context mContext;
     private  String id;
     private DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
@@ -55,7 +57,7 @@ public class ProjectsAdapter extends RecyclerView.Adapter<ProjectsAdapter.Projec
         holder.projectID.setText("ID: " + projects.getProjectID());
         holder.projectName.setText("Nombre: " + projects.getProjectName());
         holder.projectStatus.setText("Estado: " + projects.getProjectStatus());
-        holder.projectDescription.setText("Description: " + projects.getProjectDescription());
+        holder.projectDescription.setText("Descripcion: " + projects.getProjectDescription());
         holder.projectStartDate.setText("Fecha de incio: " + df.format(projects.getProjectStartDate()));
         holder.projectFinishDate.setText("Fecha de entrega: " + df.format(projects.getProjectFinishDate()));
 

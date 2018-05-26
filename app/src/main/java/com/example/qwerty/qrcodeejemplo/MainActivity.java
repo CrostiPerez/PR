@@ -92,7 +92,6 @@ public class MainActivity extends AppCompatActivity {
                         Intent intent = new Intent(MainActivity.this, ProcessesMain.class);
                         Piece.saveFromJSON(response.getJSONObject(0), getApplicationContext());
                         startActivity(intent);
-                        finish();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
