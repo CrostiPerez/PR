@@ -50,8 +50,8 @@ public class ProcessesAdapter extends RecyclerView.Adapter<ProcessesAdapter.Proc
     @Override
     public void onBindViewHolder(ProcessViewHolder holder, int position) {
         ProcessesList process = processesList.get(position);
-        holder.processID.setText(process.getProcessID() + "");
-        holder.processName.setText(process.getProcessName());
+        holder.processID.setText("ID: " + process.getProcessID() + "");
+        holder.processName.setText("Nombre: " + process.getProcessName());
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

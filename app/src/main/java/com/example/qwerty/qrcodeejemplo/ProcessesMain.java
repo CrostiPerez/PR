@@ -40,10 +40,12 @@ public class ProcessesMain extends AppCompatActivity {
 
         pieza = Piece.fromSharedPreferences(getApplicationContext());
 
-        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+        recyclerView = (RecyclerView) findViewById(R.id.procesessRecyclerView);
         mLayoutManager = new LinearLayoutManager(this);
         adapter = new ProcessesAdapter(prepareData(), pieza, User.getId(getApplicationContext()), this);
         recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.setAdapter(adapter);
+        recyclerView.addItemDecoration(new com.example.qwerty.qrcodeejemplo.DividerItemDecoration(getApplicationContext()));
     }
 
     public ArrayList<ProcessesList> prepareData() {

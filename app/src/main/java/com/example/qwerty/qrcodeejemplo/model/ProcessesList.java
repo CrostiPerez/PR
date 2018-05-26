@@ -1,13 +1,13 @@
 package com.example.qwerty.qrcodeejemplo.model;
 
+import com.example.qwerty.qrcodeejemplo.ProjectsList;
+
 public class ProcessesList {
 
     private String processName;
     private int processID;
 
-
-    public ProcessesList() {
-    }
+    public ProcessesList(){}
 
     public ProcessesList(int processID, String processName) {
         this.processName = processName;

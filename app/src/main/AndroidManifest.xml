@@ -35,7 +35,9 @@
         <activity android:name=".Cronometro" />
         <activity android:name=".PDFActivity" />
         <activity android:name=".MainActivity" />
-        <activity android:name=".ProcessesMain"></activity>
+        <activity android:name=".ProcessesMain" />
+        <activity android:name=".ProjectsMain" />
+        <activity android:name=".ModelsMain"></activity>
     </application>
 
 </manifest>

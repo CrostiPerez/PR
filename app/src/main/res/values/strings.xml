@@ -28,4 +28,13 @@
     <string name="PR">PR Calibradores</string>
 
 
+    <!--ProcesessActivity-->
+    <string name="titleProcesses">Procesos</string>
+
+    <!--ProjectsActivity-->
+    <string name="titleProjects">Proyectos</string>
+
+    <!--ModelsActivity-->
+    <string name="titleModels">Models</string>
+
 </resources>
