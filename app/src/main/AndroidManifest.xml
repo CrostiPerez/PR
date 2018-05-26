@@ -24,20 +24,20 @@
             android:name="com.android.gms.vision.DEPENDENCIES"
             android:value="barcode" />
 
-        <activity android:name=".Login">
+        <activity android:name=".view.Login">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ScanActivity" />
-        <activity android:name=".Cronometro" />
-        <activity android:name=".PDFActivity" />
-        <activity android:name=".MainActivity" />
-        <activity android:name=".ProcessesMain" />
-        <activity android:name=".ProjectsMain" />
-        <activity android:name=".ModelsMain"></activity>
+        <activity android:name=".view.ScanActivity" />
+        <activity android:name=".view.Cronometro" />
+        <activity android:name=".view.PDFActivity" />
+        <activity android:name=".view.MainActivity" />
+        <activity android:name=".view.ProcessesMain" />
+        <activity android:name=".view.ProjectsMain" />
+        <activity android:name=".view.ModelsMain"></activity>
     </application>
 
 </manifest>

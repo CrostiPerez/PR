@@ -10,7 +10,7 @@
     android:paddingTop="16dp"
     android:paddingBottom="16dp"
     android:screenOrientation="portrait"
-    tools:context=".MainActivity">
+    tools:context=".view.MainActivity">
 
     <TextView
         android:id="@+id/cronometroLabel"

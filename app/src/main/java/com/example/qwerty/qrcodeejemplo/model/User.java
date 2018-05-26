@@ -1,20 +1,7 @@
 package com.example.qwerty.qrcodeejemplo.model;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.widget.Toast;
-
-import com.example.qwerty.qrcodeejemplo.MainActivity;
-import com.example.qwerty.qrcodeejemplo.database.RestClient;
-import com.loopj.android.http.JsonHttpResponseHandler;
-import com.loopj.android.http.RequestParams;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import cz.msebera.android.httpclient.Header;
 
 /**
  * Created by qwerty on 28/04/18.
