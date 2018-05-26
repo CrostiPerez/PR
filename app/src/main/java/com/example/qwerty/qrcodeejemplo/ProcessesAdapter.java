@@ -11,10 +11,13 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import com.example.qwerty.qrcodeejemplo.model.Piece;
+import com.example.qwerty.qrcodeejemplo.model.ProcessesList;
+
 public class ProcessesAdapter extends RecyclerView.Adapter<ProcessesAdapter.ProcessViewHolder>{
 
     private ArrayList<ProcessesList> processesList;
-    private Pieza pieza;
+    private Piece pieza;
     private Context mContext;
     private  String id;
 
@@ -29,7 +32,7 @@ public class ProcessesAdapter extends RecyclerView.Adapter<ProcessesAdapter.Proc
         }
     }
 
-    public ProcessesAdapter(ArrayList<ProcessesList> processesList, Pieza pieza, String id, Context context){
+    public ProcessesAdapter(ArrayList<ProcessesList> processesList, Piece pieza, String id, Context context){
         this.processesList = processesList;
         this.pieza = pieza;
         this.id = id;
@@ -53,12 +56,6 @@ public class ProcessesAdapter extends RecyclerView.Adapter<ProcessesAdapter.Proc
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(mContext, Cronometro.class);
-                intent.putExtra("piece_id", pieza.getId());
-                intent.putExtra("model_id", pieza.getModel_id());
-                intent.putExtra("piece_name", pieza.getName());
-                intent.putExtra("piece_processes", pieza.getProcesses().toString());
-                intent.putExtra("muertes", pieza.getMuertes());
-                intent.putExtra("login_id", id);
                 mContext.startActivity(intent);
                 ((Activity)mContext).finish();
             }
@@ -70,4 +67,7 @@ public class ProcessesAdapter extends RecyclerView.Adapter<ProcessesAdapter.Proc
         return processesList.size();
     }
 
+    public void setProcessesList(ArrayList<ProcessesList> processesList) {
+        this.processesList = processesList;
+    }
 }

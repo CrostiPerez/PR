@@ -1,6 +1,7 @@
 package com.example.qwerty.qrcodeejemplo;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
@@ -13,7 +14,9 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.loopj.android.http.AsyncHttpClient;
+import com.example.qwerty.qrcodeejemplo.database.RestClient;
+import com.example.qwerty.qrcodeejemplo.model.ProcessesList;
+import com.example.qwerty.qrcodeejemplo.model.User;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -23,6 +26,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import cz.msebera.android.httpclient.Header;
+import com.example.qwerty.qrcodeejemplo.model.Piece;
 
 import static android.content.pm.ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
 import static android.graphics.Color.BLACK;
@@ -33,13 +37,14 @@ import static com.example.qwerty.qrcodeejemplo.R.drawable.ic_play_arrow_black_24
 
 public class Cronometro extends AppCompatActivity {
     Chronometer chronometer;
-    TextView finalTime, finalTimeLabel, txtName;
+    TextView finalTime, finalTimeLabel, txtName, process_name;
     ImageButton playPause, stop, death;
     boolean isPlay = false, restart = false, isDeath =false;
     long cont, contDeath, deathCounter;
+
     String result;
-    Pieza pieza;
-    int processID;
+    Piece pieza;
+    ProcessesList process = new ProcessesList();
     int loginID;
 
     @Override
@@ -47,14 +52,14 @@ public class Cronometro extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cronometro);
 
-        loginID = Integer.parseInt(getIntent().getStringExtra("login_id"));
+        loginID = Integer.parseInt(User.getId(getApplicationContext()));
         RequestParams params = new RequestParams();
         params.put("login_id", loginID);
         getProcess(params);
 
-        pieza = Pieza.fromIntent(getIntent());
+        pieza = Piece.fromSharedPreferences(getApplicationContext());
         txtName = findViewById(R.id.name);
-        txtName.setText(pieza.getName());
+        txtName.setText(pieza.getName(getApplicationContext()));
 
         chronometer = findViewById(R.id.Cronometro);
         playPause = findViewById(R.id.playPause);
@@ -141,7 +146,7 @@ public class Cronometro extends AppCompatActivity {
                 finalTime.setText(result + "\nLa pieza murio " + deathCounter + " veces.");
 
                 RequestParams params = new RequestParams();
-                params.put("muertes", deathCounter + pieza.getMuertes());
+                params.put("muertes", deathCounter + pieza.getMuertes(getApplicationContext()));
 
                 finalTime.setTextColor(BLACK);
                 finalTime.setAlpha(1.0f);
@@ -154,18 +159,19 @@ public class Cronometro extends AppCompatActivity {
 
 
                 long time = SystemClock.elapsedRealtime() - chronometer.getBase();
-                params.put("id", pieza.getId());
+                params.put("id", pieza.getId(getApplicationContext()));
 
                 try {
-                    JSONObject processData = new JSONObject();
-                    processData.put("process_id", processID);
-                    processData.put("staff_id", loginID);
-                    processData.put("time", time);
-                    params.put("json", processData.toString());
+                    JSONObject json = new JSONObject();
+                    json.put("process_id", process.getProcessID());
+                    json.put("staff_id", loginID);
+                    json.put("time", time);
+                    Toast.makeText(getApplicationContext(), json.toString(), Toast.LENGTH_LONG).show();
+                    params.put("json", json.toString());
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                doSomeNetworking(params);
+                saveTime(params);
                     AlertDialog.Builder builder = new AlertDialog.Builder(Cronometro.this, R.style.MyDialogTheme);
                     builder.setTitle("PR Calibradores");
                     builder.setMessage("¿Quiere hacer otra pieza igual?");
@@ -175,6 +181,14 @@ public class Cronometro extends AppCompatActivity {
                             new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
+                                    // positive button logic
+                                    /*ESTO NO SIRVE: RequestParams params = new RequestParams();
+                                    params.put("model_id", 4);
+                                    newPiece(params);*/
+
+                                    Intent intent = new Intent(getApplicationContext(), Cronometro.class);
+                                    startActivity(intent);
+                                    finish();
                                     finish();
                                     startActivity(getIntent());
                                 }
@@ -185,6 +199,9 @@ public class Cronometro extends AppCompatActivity {
                             new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
+                                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                                    startActivity(intent);
+                                    finish();
                                     finish();
                                 }
                             });
@@ -218,9 +235,8 @@ public class Cronometro extends AppCompatActivity {
         setRequestedOrientation(SCREEN_ORIENTATION_PORTRAIT);
     }
 
-    private void doSomeNetworking(RequestParams params) {
-        AsyncHttpClient client = new AsyncHttpClient();
-        client.post("http://www.prcalibradores.com/app/set-write.php", params, new AsyncHttpResponseHandler() {
+    private void saveTime(RequestParams params) {
+        RestClient.post("set-time.php", params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 Toast.makeText(getApplicationContext(), "Se ha finalizado el proceso", Toast.LENGTH_LONG).show();
@@ -228,18 +244,21 @@ public class Cronometro extends AppCompatActivity {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), error.getMessage() + "errorst", Toast.LENGTH_LONG).show();
+
             }
         });
     }
 
     private void getProcess(RequestParams params) {
-        AsyncHttpClient client = new AsyncHttpClient();
-        client.post("https://www.prcalibradores.com/app/get-process.php", params, new JsonHttpResponseHandler() {
+        RestClient.post("get-process.php", params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
                 try {
-                    processID = Integer.parseInt(response.getJSONObject(0).getString("process_id"));
+                    process.setProcessID(Integer.parseInt(response.getJSONObject(0).getString("process_id")));
+                    process.setProcessName(response.getJSONObject(0).getString("process_name"));
+                    process_name = findViewById(R.id.cronometroLabel);
+                    process_name.setText(process.getProcessName());
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -253,4 +272,20 @@ public class Cronometro extends AppCompatActivity {
             }
         });
     }
+
+    private void newPiece(RequestParams params) {
+        RestClient.post("set-piece.php", params, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+                Toast.makeText(getApplicationContext(), "Se ha añadido nueva pieza", Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                super.onFailure(statusCode, headers, responseString, throwable);
+                Toast.makeText(getApplicationContext(), throwable.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
 }

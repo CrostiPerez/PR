@@ -11,8 +11,8 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.example.qwerty.qrcodeejemplo.database.RestClient;
 import com.google.android.gms.vision.barcode.Barcode;
-import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
@@ -20,6 +20,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 import cz.msebera.android.httpclient.Header;
+import com.example.qwerty.qrcodeejemplo.model.Piece;
 
 import static android.view.View.VISIBLE;
 
@@ -72,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
                 final Barcode barcode = data.getParcelableExtra("barcode");
                 RequestParams params = new RequestParams();
                 params.put("id", barcode.displayValue);
-                doSomeNetworking(params);
+                getPiece(params);
             }
         }
         else if(requestCode == REQUEST_CODE && resultCode == RESULT_OK && type == PDF){
@@ -81,25 +82,15 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void doSomeNetworking(RequestParams params) {
-        AsyncHttpClient client = new AsyncHttpClient();
-        client.get("http://www.prcalibradores.com/app/get-piece.php", params, new JsonHttpResponseHandler() {
+    private void getPiece(RequestParams params) {
+        RestClient.get("get-piece.php", params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
                 super.onSuccess(statusCode, headers, response);
-                Pieza pieza = null;
                 try {
                     if (response.length() == 1) {
                         Intent intent = new Intent(MainActivity.this, ProcessesMain.class);
-                        //startActivity(intent2);
-                        pieza = Pieza.fromJSON(response.getJSONObject(0));
-                        //Intent intent = new Intent(getApplicationContext(), Cronometro.class);
-                        intent.putExtra("piece_id", pieza.getId());
-                        intent.putExtra("model_id", pieza.getModel_id());
-                        intent.putExtra("piece_name", pieza.getName());
-                        intent.putExtra("piece_processes", pieza.getProcesses().toString());
-                        intent.putExtra("muertes", pieza.getMuertes());
-                        intent.putExtra("login_id", getIntent().getStringExtra("login_id"));
+                        Piece.saveFromJSON(response.getJSONObject(0), getApplicationContext());
                         startActivity(intent);
                         finish();
                     }

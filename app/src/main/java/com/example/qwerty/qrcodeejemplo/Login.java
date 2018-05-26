@@ -9,7 +9,8 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.loopj.android.http.AsyncHttpClient;
+import com.example.qwerty.qrcodeejemplo.database.RestClient;
+import com.example.qwerty.qrcodeejemplo.model.User;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
@@ -29,6 +30,7 @@ public class Login extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        loadData();
         setContentView(R.layout.activity_login);
         txtName = findViewById(R.id.usernameInputText);
         txtPassword = findViewById(R.id.passwordInputText);
@@ -41,22 +43,22 @@ public class Login extends AppCompatActivity {
                 params.put("username", txtName.getText().toString());
                 params.put("password", txtPassword.getText().toString());
                 progress.setVisibility(VISIBLE);
-                doSomeNetworking(params);
+                login(params);
             }
         });
         progress.setVisibility(View.INVISIBLE);
     }
 
-    private void doSomeNetworking(RequestParams params) {
-        AsyncHttpClient client = new AsyncHttpClient();
-        client.post("http://www.prcalibradores.com/app/login.php", params, new JsonHttpResponseHandler() {
+    private void login(RequestParams params) {
+        RestClient.post("login.php", params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
                 super.onSuccess(statusCode, headers, response);
                 if(!response.isNull(0)) {
                     Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                     try {
-                        intent.putExtra("login_id", response.getJSONObject(0).getString("login_id"));
+                        User.setId(response.getJSONObject(0).getString("login_id"), getApplicationContext());
+                        User.setPassword(response.getJSONObject(0).getString("login_password"), getApplicationContext());
                         startActivity(intent);
                         finish();
                     } catch(JSONException e) {
@@ -74,4 +76,16 @@ public class Login extends AppCompatActivity {
             }
         });
     }
+
+    private void loadData() {
+        String user = User.getId(getApplicationContext());
+        String pass = User.getPassword(getApplicationContext());
+        if (user != null && pass != null) {
+            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+            startActivity(intent);
+            finish();
+        }
+        return;
+    }
+
 }

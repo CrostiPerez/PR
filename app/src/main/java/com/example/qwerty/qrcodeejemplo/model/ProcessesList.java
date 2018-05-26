@@ -1,4 +1,4 @@
-package com.example.qwerty.qrcodeejemplo;
+package com.example.qwerty.qrcodeejemplo.model;
 
 public class ProcessesList {
 
