@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
@@ -17,10 +18,13 @@ import org.json.JSONException;
 
 import cz.msebera.android.httpclient.Header;
 
+import static android.view.View.VISIBLE;
+
 public class Login extends AppCompatActivity {
     EditText txtName;
     EditText txtPassword;
     Button btnLogin;
+    ProgressBar progress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,21 +33,23 @@ public class Login extends AppCompatActivity {
         txtName = findViewById(R.id.usernameInputText);
         txtPassword = findViewById(R.id.passwordInputText);
         btnLogin = findViewById(R.id.loginButton);
+        progress = findViewById(R.id.progressBar3);
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 RequestParams params = new RequestParams();
                 params.put("username", txtName.getText().toString());
                 params.put("password", txtPassword.getText().toString());
+                progress.setVisibility(VISIBLE);
                 doSomeNetworking(params);
             }
         });
-
+        progress.setVisibility(View.INVISIBLE);
     }
 
     private void doSomeNetworking(RequestParams params) {
         AsyncHttpClient client = new AsyncHttpClient();
-        client.post("https://www.prcalibradores.com/app/login.php", params, new JsonHttpResponseHandler() {
+        client.post("http://www.prcalibradores.com/app/login.php", params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
                 super.onSuccess(statusCode, headers, response);

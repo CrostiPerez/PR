@@ -7,7 +7,6 @@ import android.os.SystemClock;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Chronometer;
 import android.widget.ImageButton;
@@ -176,7 +175,8 @@ public class Cronometro extends AppCompatActivity {
                             new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    // positive button logic
+                                    finish();
+                                    startActivity(getIntent());
                                 }
                             });
 
@@ -185,7 +185,7 @@ public class Cronometro extends AppCompatActivity {
                             new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    // negative button logic
+                                    finish();
                                 }
                             });
 
@@ -253,5 +253,4 @@ public class Cronometro extends AppCompatActivity {
             }
         });
     }
-
 }

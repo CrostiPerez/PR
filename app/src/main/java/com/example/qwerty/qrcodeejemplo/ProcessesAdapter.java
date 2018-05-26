@@ -1,5 +1,6 @@
 package com.example.qwerty.qrcodeejemplo;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
@@ -59,6 +60,7 @@ public class ProcessesAdapter extends RecyclerView.Adapter<ProcessesAdapter.Proc
                 intent.putExtra("muertes", pieza.getMuertes());
                 intent.putExtra("login_id", id);
                 mContext.startActivity(intent);
+                ((Activity)mContext).finish();
             }
         });
     }
