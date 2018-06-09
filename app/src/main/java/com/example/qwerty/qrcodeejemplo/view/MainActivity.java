@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
@@ -13,21 +14,21 @@ import android.widget.Toast;
 
 import com.example.qwerty.qrcodeejemplo.R;
 import com.example.qwerty.qrcodeejemplo.database.RestClient;
+import com.example.qwerty.qrcodeejemplo.model.Model;
+import com.example.qwerty.qrcodeejemplo.model.User;
 import com.google.android.gms.vision.barcode.Barcode;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
-import org.json.JSONArray;
-import org.json.JSONException;
+import org.json.JSONObject;
 
 import cz.msebera.android.httpclient.Header;
-import com.example.qwerty.qrcodeejemplo.model.Piece;
 
 import static android.view.View.VISIBLE;
 
 public class MainActivity extends AppCompatActivity {
-    Button btnScan, btnCons;
-    ProgressBar progress;
+    private Button btnScan, btnCons;
+    private ProgressBar progress;
     public static final int REQUEST_CODE = 100;
     public static final int PERMISSION_REQUEST = 200;
     public static final int CHRONOMETER = 300;
@@ -48,19 +49,19 @@ public class MainActivity extends AppCompatActivity {
         btnScan.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View v) {
-               Intent intent = new Intent(MainActivity.this, ScanActivity.class);
-               startActivityForResult(intent, REQUEST_CODE);
-               type = 300;
-               progress.setVisibility(VISIBLE);
+            Intent intent = new Intent(MainActivity.this, ScanActivity.class);
+            startActivityForResult(intent, REQUEST_CODE);
+            type = CHRONOMETER;
+            progress.setVisibility(VISIBLE);
            }
         });
         btnCons.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                progress.setVisibility(VISIBLE);
-                Intent intent = new Intent(MainActivity.this, ScanActivity.class);
-                startActivityForResult(intent, REQUEST_CODE);
-                type = 400;
+            progress.setVisibility(VISIBLE);
+            Intent intent = new Intent(MainActivity.this, ScanActivity.class);
+            startActivityForResult(intent, REQUEST_CODE);
+            type = PDF;
             }
         });
     }
@@ -69,34 +70,32 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         progress.setVisibility(View.INVISIBLE);
-        if (requestCode == REQUEST_CODE && resultCode == RESULT_OK && type == CHRONOMETER) {
-            if (data != null) {
-                final Barcode barcode = data.getParcelableExtra("barcode");
+        if (requestCode == REQUEST_CODE && resultCode == RESULT_OK && data != null) {
+            final Barcode barcode = data.getParcelableExtra("barcode");
+            String[] values = barcode.displayValue.split(",");
+            if (type == CHRONOMETER && validateData(values)) {
                 RequestParams params = new RequestParams();
-                params.put("id", barcode.displayValue);
+                params.put("project_id", values[0]);
+                params.put("model_id", values[1]);
+                params.put("user_id", User.getId(this));
+                Log.d("debug", values[0] + ", " + values[1] + ", " + User.getId(this));
                 getPiece(params);
             }
-        }
-        else if(requestCode == REQUEST_CODE && resultCode == RESULT_OK && type == PDF){
-            Intent intent = new Intent(MainActivity.this, PDFActivity.class);
-            startActivityForResult(intent, REQUEST_CODE);
+            else if(type == PDF){
+                Intent intent = new Intent(MainActivity.this, PDFActivity.class);
+                startActivityForResult(intent, REQUEST_CODE);
+            }
         }
     }
 
     private void getPiece(RequestParams params) {
-        RestClient.get("get-piece.php", params, new JsonHttpResponseHandler() {
+        RestClient.get("get-models.php", params, new JsonHttpResponseHandler() {
             @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 super.onSuccess(statusCode, headers, response);
-                try {
-                    if (response.length() == 1) {
-                        Intent intent = new Intent(MainActivity.this, ProcessesMain.class);
-                        Piece.saveFromJSON(response.getJSONObject(0), getApplicationContext());
-                        startActivity(intent);
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+                Model.saveFromJSON(response, getApplicationContext());
+                Intent intent = new Intent(MainActivity.this, Cronometro.class);
+                startActivity(intent);
             }
 
             @Override
@@ -105,6 +104,17 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "Ups parece que ha habido un error", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private boolean validateData(String[] values) {
+        if (values.length == 2) {
+            Integer.parseInt(values[0]);
+            Integer.parseInt(values[1]);
+            return true;
+        } else {
+            Toast.makeText(this, "Código QR no valido", Toast.LENGTH_SHORT).show();
+            return false;
+        }
     }
 
 }

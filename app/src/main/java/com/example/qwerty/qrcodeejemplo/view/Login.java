@@ -17,6 +17,7 @@ import com.loopj.android.http.RequestParams;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import cz.msebera.android.httpclient.Header;
 
@@ -40,11 +41,11 @@ public class Login extends AppCompatActivity {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                RequestParams params = new RequestParams();
-                params.put("username", txtName.getText().toString());
-                params.put("password", txtPassword.getText().toString());
-                progress.setVisibility(VISIBLE);
-                login(params);
+            RequestParams params = new RequestParams();
+            params.put("username", txtName.getText().toString());
+            params.put("password", txtPassword.getText().toString());
+            progress.setVisibility(VISIBLE);
+            login(params);
             }
         });
         progress.setVisibility(View.INVISIBLE);
@@ -55,18 +56,13 @@ public class Login extends AppCompatActivity {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
                 super.onSuccess(statusCode, headers, response);
-                if(!response.isNull(0)) {
-                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                    try {
-                        User.setId(response.getJSONObject(0).getString("login_id"), getApplicationContext());
-                        User.setPassword(response.getJSONObject(0).getString("login_password"), getApplicationContext());
-                        startActivity(intent);
-                        finish();
-                    } catch(JSONException e) {
-                        e.printStackTrace();
-                    }
-                } else {
-                    Toast.makeText(getApplicationContext(), "Nombre de usuario o contraseña incorrectos", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                try {
+                    User.saveFromJSON(response.getJSONObject(0), getApplicationContext());
+                    startActivity(intent);
+                    finish();
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
             }
 
@@ -74,17 +70,32 @@ public class Login extends AppCompatActivity {
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                 super.onFailure(statusCode, headers, responseString, throwable);
                 Toast.makeText(getApplicationContext(), "Nombre de usuario o contraseña incorrectos", Toast.LENGTH_SHORT).show();
+                progress.setVisibility(View.INVISIBLE);
             }
         });
     }
 
     private void loadData() {
-        String user = User.getId(getApplicationContext());
-        String pass = User.getPassword(getApplicationContext());
+        String user = User.getId(this);
+        String pass = User.getPassword(this);
         if (user != null && pass != null) {
-            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-            startActivity(intent);
-            finish();
+            RequestParams params = new RequestParams();
+            params.put("login_id", user);
+            params.put("login_password", pass);
+            RestClient.post("exist.php", params, new JsonHttpResponseHandler() {
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                    super.onSuccess(statusCode, headers, response);
+                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
+
+                @Override
+                public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                    super.onFailure(statusCode, headers, responseString, throwable);
+                }
+            });
         }
         return;
     }
