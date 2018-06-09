@@ -52,9 +52,9 @@ public class Cronometro extends AppCompatActivity {
 
         model = Model.fromSharedPreferences(this);
 
-        Log.d("debug", model.getModelID() + "");
         RequestParams params = new RequestParams();
         params.put("model_id", model.getModelID() + "");
+        params.put("process_id", User.getProcessId(this));
         setNewPiece(params);
 
         mTextView = findViewById(R.id.cronometroLabel);
@@ -159,14 +159,14 @@ public class Cronometro extends AppCompatActivity {
             deathCounter = 0;
 
             long time = SystemClock.elapsedRealtime() - chronometer.getBase();
-            params.put("id", Piece.getId(getApplicationContext()));
+            params.put("id", Piece.getId(Cronometro.this));
 
             try {
                 JSONObject json = new JSONObject();
-                json.put("process_id", User.getProcessId(getApplicationContext()));
-                json.put("staff_id", User.getId(getApplicationContext()));
+                json.put("process_id", User.getProcessId(Cronometro.this));
+                json.put("staff_id", User.getId(Cronometro.this));
                 json.put("time", time);
-                Toast.makeText(getApplicationContext(), json.toString(), Toast.LENGTH_LONG).show();
+                Toast.makeText(Cronometro.this, json.toString(), Toast.LENGTH_LONG).show();
                 params.put("json", json.toString());
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -229,28 +229,28 @@ public class Cronometro extends AppCompatActivity {
         RestClient.post("set-time.php", params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                Toast.makeText(getApplicationContext(), "Se ha finalizado el proceso", Toast.LENGTH_SHORT).show();
+                Toast.makeText(Cronometro.this, "Se ha finalizado el proceso", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                Toast.makeText(getApplicationContext(), "Ha habido un error", Toast.LENGTH_SHORT).show();
+                Toast.makeText(Cronometro.this, "Ha habido un error", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     private void setNewPiece(RequestParams params) {
-        RestClient.post("set-piece.php", params, new JsonHttpResponseHandler() {
+        RestClient.get("set-piece.php", params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                Toast.makeText(getApplicationContext(), "Se ha añadido nueva pieza", Toast.LENGTH_SHORT).show();
-                Piece.saveFromJSON(response, getApplicationContext());
+                Piece.saveFromJSON(response, Cronometro.this);
+                Toast.makeText(Cronometro.this, "ID de pieza a procesar: " + Piece.getId(Cronometro.this), Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                 super.onFailure(statusCode, headers, responseString, throwable);
-                Toast.makeText(getApplicationContext(), "Ha habido un error", Toast.LENGTH_SHORT).show();
+                Toast.makeText(Cronometro.this, "Ha habido un error", Toast.LENGTH_SHORT).show();
             }
         });
     }
