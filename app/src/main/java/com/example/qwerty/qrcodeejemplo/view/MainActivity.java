@@ -27,7 +27,7 @@ import cz.msebera.android.httpclient.Header;
 import static android.view.View.VISIBLE;
 
 public class MainActivity extends AppCompatActivity {
-    private Button btnScan, btnCons;
+    private Button btnScan, btnCons, logout;
     private ProgressBar progress;
     public static final int REQUEST_CODE = 100;
     public static final int PERMISSION_REQUEST = 200;
@@ -42,6 +42,8 @@ public class MainActivity extends AppCompatActivity {
         btnScan = findViewById(R.id.btnProceso);
         btnCons = findViewById(R.id.btnConsulta);
         progress = findViewById(R.id.progressBar);
+        logout = findViewById(R.id.logoutButton);
+
         type = 0;
         if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.CAMERA}, PERMISSION_REQUEST);
@@ -62,6 +64,16 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(MainActivity.this, ScanActivity.class);
             startActivityForResult(intent, REQUEST_CODE);
             type = PDF;
+            }
+        });
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                User.setId("",MainActivity.this);
+                User.setPassword("",MainActivity.this);
+                Intent intent = new Intent(MainActivity.this, Login.class);
+                startActivity(intent);
+                finish();
             }
         });
     }

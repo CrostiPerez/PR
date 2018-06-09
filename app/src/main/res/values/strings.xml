@@ -5,6 +5,7 @@
     <string name="PRImage">PR</string>
     <string name="processButton">Proceso</string>
     <string name="consultButton">Consulta</string>
+    <string name="logoutButton">Logout</string>
 
     <!--Cronometro-->
     <string name="title">Proceso</string>
