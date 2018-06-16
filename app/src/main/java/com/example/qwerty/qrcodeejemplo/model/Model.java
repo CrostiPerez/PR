@@ -12,15 +12,15 @@ import org.json.JSONObject;
 
 public class Model {
 
-    int modelID;
-    String modelName;
+    int mModelID;
+    String mModelName;
 
     public int getModelID() {
-        return modelID;
+        return mModelID;
     }
 
     public String getModelName() {
-        return modelName;
+        return mModelName;
     }
 
     public String getModelDescription() {
@@ -30,8 +30,8 @@ public class Model {
     String modelDescription;
 
     public Model(int modelID, String modelName, String modelDescription) {
-        this.modelID = modelID;
-        this.modelName = modelName;
+        this.mModelID = modelID;
+        this.mModelName = modelName;
         this.modelDescription = modelDescription;
     }
 
@@ -56,6 +56,12 @@ public class Model {
             e.printStackTrace();
             return null;
         }
+    }
+
+    public static void saveOnSharedPreferences(int projectID, String projectName, String modelDescription, Context context) {
+        setModelID(projectID, context);
+        setModelName(projectName, context);
+        setModelDescription(modelDescription, context);
     }
 
     public static int getModelID(Context context) {

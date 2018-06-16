@@ -1,6 +1,7 @@
 package com.example.qwerty.qrcodeejemplo.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,35 +9,33 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.qwerty.qrcodeejemplo.R;
+import com.example.qwerty.qrcodeejemplo.model.Model;
 import com.example.qwerty.qrcodeejemplo.model.ModelsList;
+import com.example.qwerty.qrcodeejemplo.view.Cronometro;
 
 import java.util.ArrayList;
 
 public class ModelsAdapter extends RecyclerView.Adapter<ModelsAdapter.ModelsViewHolder>{
 
-    private ArrayList<ModelsList> modelsList;
-    //private Pieza pieza;
+    private ArrayList<ModelsList> mModelsLists;
     private Context mContext;
     private  String id;
-    //private DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 
 
     public class ModelsViewHolder extends RecyclerView.ViewHolder {
         public TextView modelID, modelName, modelDescription;
 
-        public  ModelsViewHolder(View view){
+        ModelsViewHolder(View view){
             super(view);
-            modelID =  (TextView)view.findViewById(R.id.modelID);
-            modelName = (TextView)view.findViewById(R.id.modelName);
-            modelDescription = (TextView)view.findViewById(R.id.modelDescription);
+            modelID =  view.findViewById(R.id.modelID);
+            modelName = view.findViewById(R.id.modelName);
+            modelDescription = view.findViewById(R.id.modelDescription);
         }
     }
 
-    public ModelsAdapter(ArrayList<ModelsList> modelsList /*Pieza pieza, String id, Context context*/){
-        this.modelsList = modelsList;
-        /*this.pieza = pieza;
-        this.id = id;
-        this.mContext = context;*/
+    public ModelsAdapter(ArrayList<ModelsList> mModelsLists, Context context){
+        this.mModelsLists = mModelsLists;
+        this.mContext = context;
     }
 
     @Override
@@ -48,30 +47,33 @@ public class ModelsAdapter extends RecyclerView.Adapter<ModelsAdapter.ModelsView
     }
 
     @Override
-    public void onBindViewHolder(ModelsViewHolder holder, int position) {
-        ModelsList models = modelsList.get(position);
-        holder.modelID.setText("ID: " + models.getModelID());
-        holder.modelName.setText("Nombre: " + models.getModelName());
-        holder.modelDescription.setText("Descripcion: " + models.getModelDescription());
+    public void onBindViewHolder(final ModelsViewHolder holder, int position) {
+        ModelsList models = mModelsLists.get(position);
+        holder.modelID.setText(models.getModelID());
+        holder.modelName.setText(models.getModelName());
+        holder.modelDescription.setText(models.getModelDescription());
 
-        /*holder.itemView.setOnClickListener(new View.OnClickListener() {
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Model.saveOnSharedPreferences(
+                        Integer.parseInt(holder.modelID.getText().toString()),
+                        holder.modelName.getText().toString(),
+                        holder.modelDescription.getText().toString(),
+                        mContext);
                 Intent intent = new Intent(mContext, Cronometro.class);
-                intent.putExtra("piece_id", pieza.getId());
-                intent.putExtra("model_id", pieza.getModel_id());
-                intent.putExtra("piece_name", pieza.getName());
-                intent.putExtra("piece_processes", pieza.getProcesses().toString());
-                intent.putExtra("muertes", pieza.getMuertes());
-                intent.putExtra("login_id", id);
                 mContext.startActivity(intent);
             }
-        });*/
+        });
     }
 
     @Override
     public int getItemCount() {
-        return modelsList.size();
+        return mModelsLists.size();
+    }
+
+    public void setModelsList(ArrayList<ModelsList> modelsLists) {
+        mModelsLists = modelsLists;
     }
 
 }

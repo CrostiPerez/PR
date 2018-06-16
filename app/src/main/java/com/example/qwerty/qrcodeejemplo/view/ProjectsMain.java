@@ -3,82 +3,78 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.widget.Toast;
 
 import com.example.qwerty.qrcodeejemplo.R;
 import com.example.qwerty.qrcodeejemplo.adapter.ProjectsAdapter;
+import com.example.qwerty.qrcodeejemplo.database.RestClient;
 import com.example.qwerty.qrcodeejemplo.model.ProjectsList;
+import com.loopj.android.http.JsonHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Date;
 
+import cz.msebera.android.httpclient.Header;
+
 public class ProjectsMain extends AppCompatActivity {
-    RecyclerView recyclerView;
-    RecyclerView.LayoutManager mLayoutManager;
-    ProjectsAdapter adapter;
-    //Pieza pieza;
+    private RecyclerView mRecyclerView;
+    private RecyclerView.LayoutManager mLayoutManager;
+    private ProjectsAdapter mAdapter;
+
+    private ArrayList<ProjectsList> mProjectsList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_projects_main);
 
-        //pieza = Pieza.fromIntent(getIntent());
+        getProjects(new RequestParams());
 
-        recyclerView = (RecyclerView) findViewById(R.id.projectsRecyclerView);
+        mRecyclerView = findViewById(R.id.projectsRecyclerView);
         mLayoutManager = new LinearLayoutManager(this);
-        adapter = new ProjectsAdapter(prepareDataProjects()/*, pieza, getIntent().getStringExtra("login_id"), this*/);
+        mAdapter = new ProjectsAdapter(mProjectsList, this);
 
-        recyclerView.setLayoutManager(mLayoutManager);
-        recyclerView.setAdapter(adapter);
-        recyclerView.addItemDecoration(new DividerItemDecoration(getApplicationContext()));
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        mRecyclerView.setAdapter(mAdapter);
+        mRecyclerView.addItemDecoration(new DividerItemDecoration(getApplicationContext()));
     }
 
-    public ArrayList<ProjectsList> prepareDataProjects() {
+    private void getProjects(RequestParams params) {
+        RestClient.get("get-projects.php", params, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+                super.onSuccess(statusCode, headers, response);
+                JSONObject responseObj;
+                try {
+                    for (int i = 0; i < response.length(); i ++) {
+                        responseObj = response.getJSONObject(i);
+                        mProjectsList.add(new ProjectsList(
+                                responseObj.getString("project_id"),
+                                responseObj.getString("project_name"),
+                                responseObj.getString("project_status"),
+                                responseObj.getString("project_description"),
+                                new Date(responseObj.getString("project_startDate")),
+                                new Date(responseObj.getString("project_deadLine"))
+                                )
+                        );
+                    }
+                    mAdapter.setProjectsList(mProjectsList);
+                    mRecyclerView.setAdapter(mAdapter);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
 
-        ArrayList<ProjectsList> projectsList = new ArrayList<>();
-
-        ProjectsList project = new ProjectsList("1" , "Hola", "Aun", "Descripcion", new Date(12/07/2012), new Date(12/07/2012));
-        projectsList.add(project);
-
-        project = new ProjectsList("1" , "Hola", "sdasd", "Descripcion", new Date(12/07/2012), new Date(12/07/2012));
-        projectsList.add(project);
-
-        project = new ProjectsList("1" , "Hola", "1345y", "Descripcion", new Date(12/07/2012), new Date(12/07/2012));
-        projectsList.add(project);
-
-        project = new ProjectsList("1" , "Hola", "h56uj5u", "Descripcion", new Date(12/07/2012), new Date(12/07/2012));
-        projectsList.add(project);
-
-        project = new ProjectsList("1" , "Hola", "duefb", "Descripcion", new Date(12/07/2012), new Date(12/07/2012));
-        projectsList.add(project);
-
-        project = new ProjectsList("1" , "Hola", "34827yfr92", "Descripcion", new Date(12/07/2012), new Date(12/07/2012));
-        projectsList.add(project);
-
-        project = new ProjectsList("1" , "Hola", "fpi2m-", "Descripcion", new Date(12/07/2012), new Date(12/07/2012));
-        projectsList.add(project);
-
-        project = new ProjectsList("1" , "Hola", "cu3rfn02h", "Descripcion", new Date(12/07/2012), new Date(12/07/2012));
-        projectsList.add(project);
-
-        project = new ProjectsList("1" , "Hola", "fjg2nvoj", "Descripcion", new Date(12/07/2012), new Date(12/07/2012));
-        projectsList.add(project);
-
-        project = new ProjectsList("1" , "Hola", "vjn0t2pij0nv", "Descripcion", new Date(12/07/2012), new Date(12/07/2012));
-        projectsList.add(project);
-
-        project = new ProjectsList("1" , "Hola", "coi2jn0", "Descripcion", new Date(12/07/2012), new Date(12/07/2012));
-        projectsList.add(project);
-
-        project = new ProjectsList("1" , "Hola", "fvgybhinjo", "Descripcion", new Date(12/07/2012), new Date(12/07/2012));
-        projectsList.add(project);
-
-        project = new ProjectsList("1" , "Hola", "w4dfv6", "Descripcion", new Date(12/07/2012), new Date(12/07/2012));
-        projectsList.add(project);
-
-        project = new ProjectsList("1" , "Hola", "cyfvguhbinj", "Descripcion", new Date(12/07/2012), new Date(12/07/2012));
-        projectsList.add(project);
-
-        return projectsList;
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                super.onFailure(statusCode, headers, responseString, throwable);
+                Toast.makeText(getApplicationContext(), "Ups parece que ha habido un error", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

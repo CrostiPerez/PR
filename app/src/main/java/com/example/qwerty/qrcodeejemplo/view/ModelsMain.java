@@ -5,56 +5,101 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import java.util.ArrayList;
+
 import android.os.Bundle;
+import android.widget.Toast;
 
 import com.example.qwerty.qrcodeejemplo.R;
 import com.example.qwerty.qrcodeejemplo.adapter.ModelsAdapter;
+import com.example.qwerty.qrcodeejemplo.database.RestClient;
 import com.example.qwerty.qrcodeejemplo.model.ModelsList;
+import com.example.qwerty.qrcodeejemplo.model.Project;
+import com.example.qwerty.qrcodeejemplo.model.User;
+import com.loopj.android.http.JsonHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import cz.msebera.android.httpclient.Header;
 
 public class ModelsMain extends AppCompatActivity {
 
-    RecyclerView recyclerView;
+    RecyclerView mRecyclerView;
     RecyclerView.LayoutManager mLayoutManager;
-    ModelsAdapter adapter;
+    ModelsAdapter mAdapter;
+
+    ArrayList<ModelsList> mModelsList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_models_main);
 
-        recyclerView = (RecyclerView) findViewById(R.id.modelsRecyclerView);
-        mLayoutManager = new LinearLayoutManager(this);
-        adapter = new ModelsAdapter(prepareDataModels()/*, pieza, getIntent().getStringExtra("login_id"), this*/);
+        RequestParams params = new RequestParams();
+        params.put("project_id", Project.getProjectID(this));
+        params.put("user_id", User.getId(this));
 
-        recyclerView.setLayoutManager(mLayoutManager);
-        recyclerView.setAdapter(adapter);
-        recyclerView.addItemDecoration(new DividerItemDecoration(getApplicationContext()));
+        getModels(params);
+
+        mRecyclerView = findViewById(R.id.modelsRecyclerView);
+        mLayoutManager = new LinearLayoutManager(this);
+        mAdapter = new ModelsAdapter(mModelsList, this);
+
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        mRecyclerView.setAdapter(mAdapter);
+        mRecyclerView.addItemDecoration(new DividerItemDecoration(getApplicationContext()));
 
     }
 
-    public ArrayList<ModelsList> prepareDataModels() {
+    private void getModels(RequestParams params) {
+        RestClient.get("get-models.php", params, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+                super.onSuccess(statusCode, headers, response);
+                JSONObject responseObj;
+                try {
+                    for (int i = 0; i < response.length(); i ++) {
+                        responseObj = response.getJSONObject(i);
+                        mModelsList.add(new ModelsList(
+                                        responseObj.getString("model_id"),
+                                        responseObj.getString("model_name"),
+                                        responseObj.getString("model_description")
+                                )
+                        );
+                    }
+                    mAdapter.setModelsList(mModelsList);
+                    mRecyclerView.setAdapter(mAdapter);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
 
-        ArrayList<ModelsList> modelsList = new ArrayList<>();
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                super.onSuccess(statusCode, headers, response);
+                JSONObject responseObj;
+                try {
+                    mModelsList.add(new ModelsList(
+                                    response.getString("model_id"),
+                                    response.getString("model_name"),
+                                    response.getString("model_description")
+                            )
+                    );
+                    mAdapter.setModelsList(mModelsList);
+                    mRecyclerView.setAdapter(mAdapter);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
 
-        ModelsList model = new ModelsList("1" , "Hola", "fla");
-        modelsList.add(model);
-
-        model = new ModelsList("2" , "Hola", "sfghjk");
-        modelsList.add(model);
-
-        model = new ModelsList("3" , "Hola", "euihbvfiv");
-        modelsList.add(model);
-
-        model = new ModelsList("4" , "Hola", "viejnv");
-        modelsList.add(model);
-
-        model = new ModelsList("5" , "Hola", "wertyu");
-        modelsList.add(model);
-
-        model = new ModelsList("6" , "Hola", "mkvmo");
-        modelsList.add(model);
-
-        return modelsList;
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                super.onFailure(statusCode, headers, responseString, throwable);
+                Toast.makeText(getApplicationContext(), "Ups parece que ha habido un error", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
 }

@@ -51,10 +51,11 @@ public class MainActivity extends AppCompatActivity {
         btnScan.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View v) {
-            Intent intent = new Intent(MainActivity.this, ScanActivity.class);
-            startActivityForResult(intent, REQUEST_CODE);
+            Intent intent = new Intent(MainActivity.this, ProjectsMain.class);
+            startActivity(intent);
             type = CHRONOMETER;
             progress.setVisibility(VISIBLE);
+            finish();
            }
         });
         btnCons.setOnClickListener(new View.OnClickListener() {
@@ -85,13 +86,14 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode == REQUEST_CODE && resultCode == RESULT_OK && data != null) {
             final Barcode barcode = data.getParcelableExtra("barcode");
             String[] values = barcode.displayValue.split(",");
+            //17(año)-66(tipo de trabajo)-037(num cliente)-461(proyecto)-003(ensamble)-001(pieza)
             if (type == CHRONOMETER && validateData(values)) {
                 RequestParams params = new RequestParams();
                 params.put("project_id", values[0]);
                 params.put("model_id", values[1]);
                 params.put("user_id", User.getId(this));
                 Log.d("debug", values[0] + ", " + values[1] + ", " + User.getId(this));
-                getPiece(params);
+                getModel(params);
             }
             else if(type == PDF){
                 Intent intent = new Intent(MainActivity.this, PDFActivity.class);
@@ -100,8 +102,8 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void getPiece(RequestParams params) {
-        RestClient.get("get-models.php", params, new JsonHttpResponseHandler() {
+    private void getModel(RequestParams params) {
+        RestClient.get("get-model.php", params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 super.onSuccess(statusCode, headers, response);

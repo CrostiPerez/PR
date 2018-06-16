@@ -24,12 +24,12 @@ import cz.msebera.android.httpclient.Header;
 import static android.view.View.VISIBLE;
 
 public class Login extends AppCompatActivity {
-    EditText txtName;
-    EditText txtPassword;
-    Button btnLogin;
-    ProgressBar progress;
-    String user;
-    String pass;
+    private EditText txtName;
+    private EditText txtPassword;
+    private Button btnLogin;
+    private ProgressBar progress;
+    private String user;
+    private String pass;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
