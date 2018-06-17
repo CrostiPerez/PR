@@ -34,7 +34,7 @@ public class Login extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        loadData();
+//        loadData();
         setContentView(R.layout.activity_login);
         progress = findViewById(R.id.progressBar3);
         progress.setVisibility(View.INVISIBLE);
@@ -77,45 +77,45 @@ public class Login extends AppCompatActivity {
         });
     }
 
-    private void loadData() {
-        user = User.getId(this);
-        pass = User.getPassword(this);
-        try {
-            if ((!user.equals("")) && (!pass.equals(""))) {
-                RequestParams params = new RequestParams();
-                params.put("login_id", user);
-                params.put("login_password", pass);
-                RestClient.post("exist.php", params, new JsonHttpResponseHandler() {
-                    @Override
-                    public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-                        super.onSuccess(statusCode, headers, response);
-                        String responseID;
-                        String responsePass;
-                        try {
-                            responseID = response.getJSONObject(0).getString("login_id");
-                            responsePass = response.getJSONObject(0).getString("login_password");
-                            if (responseID.equals(user) && responsePass.equals(pass)) {
-                                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                                startActivity(intent);
-                                finish();
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        } catch (NullPointerException e) {
-                            e.printStackTrace();
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                        super.onFailure(statusCode, headers, responseString, throwable);
-                        setContentView(R.layout.activity_login);
-                    }
-                });
-            }
-        } catch (NullPointerException e) {
-            e.printStackTrace();
-        }
-    }
+//    private void loadData() {
+//        user = User.getId(this);
+//        pass = User.getPassword(this);
+//        try {
+//            if ((!user.equals("")) && (!pass.equals(""))) {
+//                RequestParams params = new RequestParams();
+//                params.put("login_id", user);
+//                params.put("login_password", pass);
+//                RestClient.post("exist.php", params, new JsonHttpResponseHandler() {
+//                    @Override
+//                    public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+//                        super.onSuccess(statusCode, headers, response);
+//                        String responseID;
+//                        String responsePass;
+//                        try {
+//                            responseID = response.getJSONObject(0).getString("login_id");
+//                            responsePass = response.getJSONObject(0).getString("login_password");
+//                            if (responseID.equals(user) && responsePass.equals(pass)) {
+//                                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+//                                startActivity(intent);
+//                                finish();
+//                            }
+//                        } catch (JSONException e) {
+//                            e.printStackTrace();
+//                        } catch (NullPointerException e) {
+//                            e.printStackTrace();
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+//                        super.onFailure(statusCode, headers, responseString, throwable);
+//                        setContentView(R.layout.activity_login);
+//                    }
+//                });
+//            }
+//        } catch (NullPointerException e) {
+//            e.printStackTrace();
+//        }
+//    }
 
 }

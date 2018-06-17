@@ -12,36 +12,78 @@
     android:paddingTop="10dp">
 
     <TextView
-        android:id="@+id/projectID"
-        android:layout_width="0dp"
+        android:id="@+id/projectIDText"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="4dp"
+        android:layout_marginEnd="8dp"
         android:layout_marginLeft="8dp"
-        android:layout_marginRight="4dp"
+        android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
+        android:text="@string/IDProjects"
         android:textStyle="normal|bold"
-        app:layout_constraintBottom_toTopOf="@+id/projectDescription"
-        app:layout_constraintEnd_toStartOf="@+id/projectName"
+        app:layout_constraintBottom_toTopOf="@+id/projectDescriptionText"
+        app:layout_constraintEnd_toStartOf="@+id/projectID"
+        app:layout_constraintHorizontal_chainStyle="spread_inside"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/projectName"
-        android:layout_width="0dp"
+        android:id="@+id/projectID"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
-        android:layout_marginLeft="4dp"
+        android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        android:layout_marginStart="4dp"
+        android:layout_marginStart="8dp"
+        app:layout_constraintEnd_toStartOf="@+id/projectNameText"
+        app:layout_constraintStart_toEndOf="@+id/projectIDText"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/projectNameText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:text="@string/nameProjects"
         android:textStyle="normal|bold"
-        app:layout_constraintBottom_toTopOf="@+id/projectDescription"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/projectName"
         app:layout_constraintStart_toEndOf="@+id/projectID"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
+        android:id="@+id/projectName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/projectNameText"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/projectDescriptionText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="7dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:text="@string/descriptionProjects"
+        android:textStyle="normal|bold"
+        app:layout_constraintBottom_toTopOf="@+id/projectDescription"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/projectIDText" />
+
+    <TextView
         android:id="@+id/projectDescription"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginLeft="8dp"
@@ -49,7 +91,21 @@
         android:layout_marginStart="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/projectID" />
+        app:layout_constraintTop_toBottomOf="@+id/projectDescriptionText" />
+
+    <TextView
+        android:id="@+id/projectStartDateText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:text="@string/startDateProjects"
+        android:textStyle="normal|bold"
+        app:layout_constraintEnd_toStartOf="@+id/projectStartDate"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/projectDescription" />
 
     <TextView
         android:id="@+id/projectStartDate"
@@ -59,10 +115,22 @@
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
+        app:layout_constraintEnd_toStartOf="@+id/projectFinishDateText"
+        app:layout_constraintStart_toEndOf="@+id/projectStartDateText"
+        app:layout_constraintTop_toBottomOf="@+id/projectDescription" />
+
+    <TextView
+        android:id="@+id/projectFinishDateText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:text="@string/finishDateProjects"
         android:textStyle="normal|bold"
-        app:layout_constraintBottom_toTopOf="@+id/projectStatus"
         app:layout_constraintEnd_toStartOf="@+id/projectFinishDate"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/projectStartDate"
         app:layout_constraintTop_toBottomOf="@+id/projectDescription" />
 
     <TextView
@@ -73,23 +141,36 @@
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
-        android:textStyle="normal|bold"
-        app:layout_constraintBottom_toTopOf="@+id/projectStatus"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/projectStartDate"
+        app:layout_constraintStart_toEndOf="@+id/projectFinishDateText"
         app:layout_constraintTop_toBottomOf="@+id/projectDescription" />
 
     <TextView
-        android:id="@+id/projectStatus"
+        android:id="@+id/projectStatusText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:text="@string/statusProjects"
+        android:textStyle="normal|bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/projectStatus"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/projectStartDateText" />
+
+    <TextView
+        android:id="@+id/projectStatus"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toEndOf="@+id/projectStatusText"
+        app:layout_constraintTop_toBottomOf="@+id/projectStartDateText" />
 
 </android.support.constraint.ConstraintLayout>

@@ -8,43 +8,81 @@
     android:paddingTop="10dp">
 
     <TextView
-        android:id="@+id/modelID"
-        android:layout_width="0dp"
+        android:id="@+id/modelIDText"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
+        android:text="@string/IDModels"
         android:textStyle="normal|bold"
-        app:layout_constraintBottom_toTopOf="@+id/modelName"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/modelNameText"
+        app:layout_constraintEnd_toStartOf="@+id/modelID"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/modelDescription"
+        android:id="@+id/modelID"
         android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/modelName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/modelIDText"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/modelNameText"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
+        android:text="@string/nameModels"
         android:textStyle="normal|bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/modelDescriptionText"
+        app:layout_constraintEnd_toStartOf="@+id/modelName"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/modelName" />
+        app:layout_constraintTop_toBottomOf="@+id/modelIDText" />
 
     <TextView
         android:id="@+id/modelName"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/modelDescription"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/modelNameText"
+        app:layout_constraintTop_toBottomOf="@+id/modelID" />
+
+    <TextView
+        android:id="@+id/modelDescriptionText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/modelDescription"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:text="@string/descriptionModels"
+        android:textStyle="normal|bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/modelDescription"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/modelID" />
+        app:layout_constraintTop_toBottomOf="@+id/modelNameText" />
+
+    <TextView
+        android:id="@+id/modelDescription"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/modelDescriptionText"
+        app:layout_constraintTop_toBottomOf="@+id/modelName" />
+
 </android.support.constraint.ConstraintLayout>

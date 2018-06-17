@@ -20,7 +20,7 @@
 
 
     <!--Login-->
-    <string name="loginPRImage">PR Image</string>
+    <string name="loginPRImage">Imagen PR</string>
     <string name="usernameInputText">Nombre de usuario: </string>
     <string name="usernameText">Nombre de usuario: </string>
     <string name="passwordInputText">Contraseña: </string>
@@ -32,10 +32,30 @@
     <!--ProcesessActivity-->
     <string name="titleProcesses">Procesos</string>
 
+    <!--ProcessesListRow-->
+    <string name="IDProcesses">ID:</string>
+    <string name="nameProcesses">Nombre:</string>
+
     <!--ProjectsActivity-->
     <string name="titleProjects">Proyectos</string>
 
+    <!--ProjectsListRow-->
+    <string name="IDProjects">ID:</string>
+    <string name="nameProjects">Nombre:</string>
+    <string name="statusProjects">Estado:</string>
+    <string name="descriptionProjects">Descripcion:</string>
+    <string name="startDateProjects">Fecha de inicio:</string>
+    <string name="finishDateProjects">Fecha de entrega:</string>
+
     <!--ModelsActivity-->
-    <string name="titleModels">Models</string>
+    <string name="titleModels">Modelos</string>
+
+    <!--ModelsListRow-->
+    <string name="IDModels">ID:</string>
+    <string name="nameModels">Nombre:</string>
+    <string name="descriptionModels">Descripcion:</string>
+
+    <!--Splash screen-->
+    <string name="splashScreenImage">Imagen PR</string>
 
 </resources>

@@ -24,7 +24,8 @@
             android:name="com.android.gms.vision.DEPENDENCIES"
             android:value="barcode" />
 
-        <activity android:name=".view.Login">
+        <activity android:name=".view.SplashActivity"
+            android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -37,7 +38,8 @@
         <activity android:name=".view.MainActivity" />
         <activity android:name=".view.ProcessesMain" />
         <activity android:name=".view.ProjectsMain" />
-        <activity android:name=".view.ModelsMain"></activity>
+        <activity android:name=".view.ModelsMain" />
+        <activity android:name=".view.Login"></activity>
     </application>
 
 </manifest>
