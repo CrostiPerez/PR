@@ -27,7 +27,7 @@ public class SplashActivity extends AppCompatActivity {
         user = User.getId(SplashActivity.this);
         pass = User.getPassword(SplashActivity.this);
         try {
-            if ((!user.equals("")) && (!pass.equals(""))) {
+            if ((user != null && pass != null) && (!user.equals("")) && (!pass.equals(""))) {
                 RequestParams params = new RequestParams();
                 params.put("login_id", user);
                 params.put("login_password", pass);

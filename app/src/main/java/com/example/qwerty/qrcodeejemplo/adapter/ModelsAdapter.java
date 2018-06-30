@@ -1,5 +1,6 @@
 package com.example.qwerty.qrcodeejemplo.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
@@ -63,6 +64,7 @@ public class ModelsAdapter extends RecyclerView.Adapter<ModelsAdapter.ModelsView
                         mContext);
                 Intent intent = new Intent(mContext, Cronometro.class);
                 mContext.startActivity(intent);
+                ((Activity)mContext).finish();
             }
         });
     }

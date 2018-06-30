@@ -55,7 +55,6 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
             type = CHRONOMETER;
             progress.setVisibility(VISIBLE);
-            finish();
            }
         });
         btnCons.setOnClickListener(new View.OnClickListener() {
@@ -80,17 +79,23 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();
+        progress.setVisibility(View.INVISIBLE);
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         progress.setVisibility(View.INVISIBLE);
         if (requestCode == REQUEST_CODE && resultCode == RESULT_OK && data != null) {
             final Barcode barcode = data.getParcelableExtra("barcode");
-            String[] values = barcode.displayValue.split(",");
+            String[] values = barcode.displayValue.split("-");
             //17(año)-66(tipo de trabajo)-037(num cliente)-461(proyecto)-003(ensamble)-001(pieza)
             if (type == CHRONOMETER && validateData(values)) {
                 RequestParams params = new RequestParams();
-                params.put("project_id", values[0]);
-                params.put("model_id", values[1]);
+                params.put("project_id", values[4]);
+                params.put("model_id", values[5]);
                 params.put("user_id", User.getId(this));
                 Log.d("debug", values[0] + ", " + values[1] + ", " + User.getId(this));
                 getModel(params);

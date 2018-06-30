@@ -73,7 +73,7 @@ public class ProjectsMain extends AppCompatActivity {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                 super.onFailure(statusCode, headers, responseString, throwable);
-                Toast.makeText(getApplicationContext(), "Ups parece que ha habido un error", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Error al consultar los proyectos", Toast.LENGTH_SHORT).show();
             }
         });
     }
