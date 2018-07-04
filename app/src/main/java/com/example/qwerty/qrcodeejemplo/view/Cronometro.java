@@ -44,6 +44,7 @@ public class Cronometro extends AppCompatActivity {
 
     private String result;
     private Model model;
+    private String nextProcessName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -166,41 +167,12 @@ public class Cronometro extends AppCompatActivity {
                 json.put("process_id", User.getProcessId(Cronometro.this));
                 json.put("staff_id", User.getId(Cronometro.this));
                 json.put("time", time);
-                Toast.makeText(Cronometro.this, json.toString(), Toast.LENGTH_LONG).show();
                 params.put("json", json.toString());
             } catch (JSONException e) {
                 e.printStackTrace();
             }
             setTime(params);
 
-            AlertDialog.Builder builder = new AlertDialog.Builder(Cronometro.this, R.style.MyDialogTheme);
-            builder.setTitle("PR Calibradores");
-            builder.setMessage("¿Quiere hacer otra pieza igual?");
-
-            String positiveText = "Sí";
-            builder.setPositiveButton(positiveText, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                // positive button logic
-                Intent intent = new Intent(getApplicationContext(), Cronometro.class);
-                startActivity(getIntent());
-                finish();
-                }
-            });
-
-            String negativeText = "No";
-            builder.setNegativeButton(negativeText, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            Intent intent = new Intent(Cronometro.this, MainActivity.class);
-                            startActivity(intent);
-                            finish();
-                }
-            });
-
-            AlertDialog dialog = builder.create();
-            // display dialog
-            dialog.show();
                 }
         });
 
@@ -228,21 +200,56 @@ public class Cronometro extends AppCompatActivity {
     }
 
     private void setTime(RequestParams params) {
-        RestClient.post("set-time.php", params, new AsyncHttpResponseHandler() {
+        RestClient.post("set-time.php", params, new JsonHttpResponseHandler() {
             @Override
-            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                super.onSuccess(statusCode, headers, response);
                 Toast.makeText(Cronometro.this, "Se ha finalizado el proceso", Toast.LENGTH_SHORT).show();
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(Cronometro.this, R.style.MyDialogTheme);
+                builder.setTitle("Proceso terminado");
+                try {
+                    builder.setMessage("Siguiente proceso: " + response.getString("process_name") + ". ¿Quiere hacer otra pieza igual?");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                String positiveText = "Sí";
+                builder.setPositiveButton(positiveText, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // positive button logic
+                        Intent intent = new Intent(getApplicationContext(), Cronometro.class);
+                        startActivity(getIntent());
+                        finish();
+                    }
+                });
+
+                String negativeText = "No";
+                builder.setNegativeButton(negativeText, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = new Intent(Cronometro.this, MainActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
+                });
+
+                AlertDialog dialog = builder.create();
+                // display dialog
+                dialog.show();
             }
 
             @Override
-            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                Toast.makeText(Cronometro.this, "Ha habido un error", Toast.LENGTH_SHORT).show();
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                super.onFailure(statusCode, headers, responseString, throwable);
+                Toast.makeText(Cronometro.this, "Ha habido un error al registrar el tiempo", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     private void setNewPiece(RequestParams params) {
-        RestClient.get("set-piece.php", params, new JsonHttpResponseHandler() {
+        RestClient.post("set-piece.php", params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 Piece.saveFromJSON(response, Cronometro.this);
