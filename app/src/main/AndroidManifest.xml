@@ -39,7 +39,7 @@
         <activity android:name=".view.ProcessesMain" />
         <activity android:name=".view.ProjectsMain" />
         <activity android:name=".view.ModelsMain" />
-        <activity android:name=".view.Login"></activity>
+        <activity android:name=".view.LoginActivity"></activity>
     </application>
 
 </manifest>

@@ -19,11 +19,11 @@
     <string name="no">No</string>
 
 
-    <!--Login-->
+    <!--LoginActivity-->
     <string name="loginPRImage">Imagen PR</string>
-    <string name="usernameInputText">Nombre de usuario: </string>
+    <string name="usernameInputText">Nombre de usuario</string>
     <string name="usernameText">Nombre de usuario: </string>
-    <string name="passwordInputText">Contraseña: </string>
+    <string name="passwordInputText">Contraseña</string>
     <string name="passwordText">Contraseña: </string>
     <string name="loginButton">Entrar </string>
     <string name="PR">PR Calibradores</string>

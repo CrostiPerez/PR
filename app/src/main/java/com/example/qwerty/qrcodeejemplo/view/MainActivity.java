@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 User.setId("",MainActivity.this);
                 User.setPassword("",MainActivity.this);
-                Intent intent = new Intent(MainActivity.this, Login.class);
+                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
                 startActivity(intent);
                 finish();
             }
@@ -127,8 +127,13 @@ public class MainActivity extends AppCompatActivity {
 
     private boolean validateData(String[] values) {
         if (values.length == 2) {
-            Integer.parseInt(values[0]);
-            Integer.parseInt(values[1]);
+            try {
+                Integer.parseInt(values[0]);
+                Integer.parseInt(values[1]);
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+                return false;
+            }
             return true;
         } else {
             Toast.makeText(this, "Código QR no valido", Toast.LENGTH_SHORT).show();

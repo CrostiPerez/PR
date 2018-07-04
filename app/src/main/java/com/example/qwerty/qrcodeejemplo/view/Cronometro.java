@@ -44,7 +44,6 @@ public class Cronometro extends AppCompatActivity {
 
     private String result;
     private Model model;
-    private String nextProcessName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -180,19 +179,19 @@ public class Cronometro extends AppCompatActivity {
             @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
             public void onClick(View view){
-            isDeath = true;
-            death.setEnabled(false);
-            playPause.setEnabled(true);
-            stop.setEnabled(false);
-            playPause.setImageDrawable(getDrawable(ic_play_arrow_black_24dp));
-            chronometer.stop();
-            result = (String) chronometer.getContentDescription();
-            mFinalTime.setText("La pieza murio al tiempo: \n" + result);
-            mFinalTime.setTextColor(RED);
-            mFinalTime.setAlpha(1.0f);
-            isPlay = false;
-            contDeath = SystemClock.elapsedRealtime();
-            deathCounter++;
+                isDeath = true;
+                death.setEnabled(false);
+                playPause.setEnabled(true);
+                stop.setEnabled(false);
+                playPause.setImageDrawable(getDrawable(ic_play_arrow_black_24dp));
+                chronometer.stop();
+                result = (String) chronometer.getContentDescription();
+                mFinalTime.setText("La pieza murio al tiempo: \n" + result);
+                mFinalTime.setTextColor(RED);
+                mFinalTime.setAlpha(1.0f);
+                isPlay = false;
+                contDeath = SystemClock.elapsedRealtime();
+                deathCounter++;
             }
         });
 
@@ -206,13 +205,20 @@ public class Cronometro extends AppCompatActivity {
                 super.onSuccess(statusCode, headers, response);
                 Toast.makeText(Cronometro.this, "Se ha finalizado el proceso", Toast.LENGTH_SHORT).show();
 
-                AlertDialog.Builder builder = new AlertDialog.Builder(Cronometro.this, R.style.MyDialogTheme);
-                builder.setTitle("Proceso terminado");
+                String nextProcessName = null;
                 try {
-                    builder.setMessage("Siguiente proceso: " + response.getString("process_name") + ". ¿Quiere hacer otra pieza igual?");
+                    nextProcessName = response.getString("process_name");
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+                String message = "";
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(Cronometro.this, R.style.MyDialogTheme);
+                builder.setTitle("Proceso terminado");
+                if (!nextProcessName.equals("No hay más procesos")) {
+                    message = "Siguiente proceso: ";
+                }
+                builder.setMessage(message + nextProcessName + ". ¿Quiere hacer otra pieza igual?");
 
                 String positiveText = "Sí";
                 builder.setPositiveButton(positiveText, new DialogInterface.OnClickListener() {
