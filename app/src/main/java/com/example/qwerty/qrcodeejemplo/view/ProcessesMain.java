@@ -54,7 +54,7 @@ public class ProcessesMain extends AppCompatActivity {
     }
 
     private void getProcesses(RequestParams params) {
-        RestClient.get("get-processes.php", params, new JsonHttpResponseHandler() {
+        RestClient.get(RestClient.FILE_GET_PROCESSES, params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
                 super.onSuccess(statusCode, headers, response);
@@ -75,7 +75,11 @@ public class ProcessesMain extends AppCompatActivity {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                 super.onFailure(statusCode, headers, responseString, throwable);
-                Toast.makeText(getApplicationContext(), "Ups parece que ha habido un error", Toast.LENGTH_SHORT).show();
+                String message = getString(
+                        R.string.exception_network,
+                        getResources().getString(R.string.exception_get_processes)
+                );
+                Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
             }
         });
     }

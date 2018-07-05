@@ -45,7 +45,7 @@ public class ProjectsMain extends AppCompatActivity {
     }
 
     private void getProjects(RequestParams params) {
-        RestClient.get("get-projects.php", params, new JsonHttpResponseHandler() {
+        RestClient.get(RestClient.FILE_GET_PROJECTS, params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
                 super.onSuccess(statusCode, headers, response);
@@ -73,7 +73,10 @@ public class ProjectsMain extends AppCompatActivity {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                 super.onFailure(statusCode, headers, responseString, throwable);
-                Toast.makeText(getApplicationContext(), "Error al consultar los proyectos", Toast.LENGTH_SHORT).show();
+                String message = getString(
+                        R.string.exception_network,
+                        getResources().getString(R.string.exception_get_projects));
+                Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
             }
         });
     }

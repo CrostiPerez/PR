@@ -12,7 +12,7 @@ import android.widget.TextView;
 import com.example.qwerty.qrcodeejemplo.R;
 import com.example.qwerty.qrcodeejemplo.model.Model;
 import com.example.qwerty.qrcodeejemplo.model.ModelsList;
-import com.example.qwerty.qrcodeejemplo.view.Cronometro;
+import com.example.qwerty.qrcodeejemplo.view.CronometroActivity;
 
 import java.util.ArrayList;
 
@@ -62,7 +62,7 @@ public class ModelsAdapter extends RecyclerView.Adapter<ModelsAdapter.ModelsView
                         holder.modelName.getText().toString(),
                         holder.modelDescription.getText().toString(),
                         mContext);
-                Intent intent = new Intent(mContext, Cronometro.class);
+                Intent intent = new Intent(mContext, CronometroActivity.class);
                 mContext.startActivity(intent);
                 ((Activity)mContext).finish();
             }

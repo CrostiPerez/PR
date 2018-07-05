@@ -48,7 +48,7 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     private void validateCredentials(RequestParams params) {
-        RestClient.post("exist.php", params, new JsonHttpResponseHandler() {
+        RestClient.post(RestClient.FILE_EXIST_USER, params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
                 super.onSuccess(statusCode, headers, response);

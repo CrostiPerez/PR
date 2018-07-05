@@ -1,6 +1,8 @@
 package com.example.qwerty.qrcodeejemplo.view;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -17,17 +19,29 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class PDFActivity extends AppCompatActivity {
-    PDFView pdfView;
-    ProgressBar progressBar;
+
+    private static final String EXTRA_MODEL_ID = "model_id";
+
+    private PDFView mPDFView;
+    private ProgressBar mProgressBar;
+
+    public static Intent newIntent(Context packageContext, String modelId) {
+        Intent intent = new Intent(packageContext, PDFActivity.class);
+        intent.putExtra(EXTRA_MODEL_ID, modelId);
+        return intent;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pdf);
-        progressBar = findViewById(R.id.progressBar2);
-        pdfView = findViewById(R.id.pdf);
-        //pdfView.fromAsset("CCA-Certificate-Java Level 1.pdf").load();
-        new RetrievePDFStream().execute("https://www.rstudio.com/wp-content/uploads/2015/03/rmarkdown-spanish.pdf");
+
+        String modelId = getIntent().getStringExtra(EXTRA_MODEL_ID);
+
+        mProgressBar = findViewById(R.id.progressBar2);
+        mPDFView = findViewById(R.id.pdf);
+        //mPDFView.fromAsset("CCA-Certificate-Java Level 1.pdf").load();
+        new RetrievePDFStream().execute(modelId);
     }
 
    @SuppressLint("StaticFieldLeak")
@@ -56,8 +70,8 @@ public class PDFActivity extends AppCompatActivity {
 
        @Override
         protected void onPostExecute(InputStream inputStream) {
-            pdfView.fromStream(inputStream).load();
-           progressBar.setVisibility(View.GONE);
+            mPDFView.fromStream(inputStream).load();
+            mProgressBar.setVisibility(View.GONE);
         }
     }
 }

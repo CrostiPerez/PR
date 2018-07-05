@@ -7,7 +7,7 @@
     <string name="consultButton">Consulta</string>
     <string name="logoutButton">Logout</string>
 
-    <!--Cronometro-->
+    <!--CronometroActivity-->
     <string name="title">Proceso</string>
     <string name="pieceName">Pieza</string>
     <string name="finalTimeLabel">Tiempo final</string>
@@ -57,5 +57,13 @@
 
     <!--Splash screen-->
     <string name="splashScreenImage">Imagen PR</string>
+
+    <!-- Dialog terminated piece -->
+    <string name="dialog_title">Proceso terminado</string>
+    <string name="dialog_message">%1$s. ¿Quiere hacer otra pieza igual?</string>
+    <string name="dialog_next_process">Siguiente proceso: </string>
+    <string name="dialog_yes">Sí</string>
+    <string name="dialog_no">No</string>
+    <string name="dialog_processes_terminated">No hay más procesos</string>
 
 </resources>

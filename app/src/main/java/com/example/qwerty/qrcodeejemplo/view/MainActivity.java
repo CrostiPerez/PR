@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
@@ -27,13 +26,13 @@ import cz.msebera.android.httpclient.Header;
 import static android.view.View.VISIBLE;
 
 public class MainActivity extends AppCompatActivity {
-    private Button btnScan, btnCons, logout;
+    private Button btnScan;
+    private Button btnCons;
+    private Button logout;
     private ProgressBar progress;
-    public static final int REQUEST_CODE = 100;
-    public static final int PERMISSION_REQUEST = 200;
-    public static final int CHRONOMETER = 300;
-    public static final int PDF = 400;
-    int type = 0;
+    private static final int PERMISSION_REQUEST = 200;
+    private static final int REQUEST_CHRONOMETER = 483;
+    private static final int REQUEST_SCANNER = 43;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +43,6 @@ public class MainActivity extends AppCompatActivity {
         progress = findViewById(R.id.progressBar);
         logout = findViewById(R.id.logoutButton);
 
-        type = 0;
         if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.CAMERA}, PERMISSION_REQUEST);
         }
@@ -53,7 +51,6 @@ public class MainActivity extends AppCompatActivity {
            public void onClick(View v) {
             Intent intent = new Intent(MainActivity.this, ProjectsMain.class);
             startActivity(intent);
-            type = CHRONOMETER;
             progress.setVisibility(VISIBLE);
            }
         });
@@ -62,8 +59,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
             progress.setVisibility(VISIBLE);
             Intent intent = new Intent(MainActivity.this, ScanActivity.class);
-            startActivityForResult(intent, REQUEST_CODE);
-            type = PDF;
+            startActivityForResult(intent, REQUEST_SCANNER);
             }
         });
         logout.setOnClickListener(new View.OnClickListener() {
@@ -88,56 +84,81 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         progress.setVisibility(View.INVISIBLE);
-        if (requestCode == REQUEST_CODE && resultCode == RESULT_OK && data != null) {
-            final Barcode barcode = data.getParcelableExtra("barcode");
-            String[] values = barcode.displayValue.split("-");
-            //17(año)-66(tipo de trabajo)-037(num cliente)-461(proyecto)-003(ensamble)-001(pieza)
-            if (type == CHRONOMETER && validateData(values)) {
-                RequestParams params = new RequestParams();
-                params.put("project_id", values[4]);
-                params.put("model_id", values[5]);
-                params.put("user_id", User.getId(this));
-                Log.d("debug", values[0] + ", " + values[1] + ", " + User.getId(this));
-                getModel(params);
-            }
-            else if(type == PDF){
-                Intent intent = new Intent(MainActivity.this, PDFActivity.class);
-                startActivityForResult(intent, REQUEST_CODE);
-            }
+        if (resultCode != RESULT_OK) {
+            return;
+        }
+        Barcode barcode = data.getParcelableExtra(ScanActivity.EXTRA_BARCODE);
+        String[] values = barcode.displayValue.split("-");
+
+        if (!isValidData(values)) {
+            return;
+        }
+        //17(año)-66(tipo de trabajo)-037(num cliente)-461(proyecto)-003(ensamble)-001(pieza)
+
+        if (requestCode == REQUEST_CHRONOMETER) {
+            getModel(values[4], values[5], User.getId(this));
+        }
+        else if(requestCode == REQUEST_SCANNER){
+            Intent intent = PDFActivity.newIntent(MainActivity.this, barcode.displayValue);
+            startActivity(intent);
         }
     }
 
-    private void getModel(RequestParams params) {
-        RestClient.get("get-model.php", params, new JsonHttpResponseHandler() {
+    private void getModel(String projectId, String modelId, String userId) {
+        RequestParams params = new RequestParams();
+        params.put("project_id", projectId);
+        params.put("model_id", modelId);
+        params.put("user_id", userId);
+        RestClient.get(RestClient.FILE_GET_MODEL, params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 super.onSuccess(statusCode, headers, response);
                 Model.saveFromJSON(response, getApplicationContext());
-                Intent intent = new Intent(MainActivity.this, Cronometro.class);
+                Intent intent = new Intent(MainActivity.this, CronometroActivity.class);
                 startActivity(intent);
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                 super.onFailure(statusCode, headers, responseString, throwable);
-                Toast.makeText(getApplicationContext(), "Ups parece que ha habido un error", Toast.LENGTH_SHORT).show();
+                String message = getResources().getString(R.string.exception_get_model);
+                Toast.makeText(
+                        getApplicationContext(),
+                        getString(R.string.exception_network, message),
+                        Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    private boolean validateData(String[] values) {
-        if (values.length == 2) {
-            try {
-                Integer.parseInt(values[0]);
-                Integer.parseInt(values[1]);
-            } catch (NumberFormatException e) {
-                e.printStackTrace();
-                return false;
+    private boolean isValidData(String... values) {
+        try {
+            if (!(values.length == 6)) throw new NotValidDataException(R.string.exception_number_values);
+
+            for (String value : values) {
+                if (!isNumber(value)) throw new NotValidDataException(R.string.exception_not_number);
             }
-            return true;
-        } else {
-            Toast.makeText(this, "Código QR no valido", Toast.LENGTH_SHORT).show();
+        } catch (NotValidDataException e) {
             return false;
+        }
+        return true;
+    }
+
+    private boolean isNumber(String string) {
+        try {
+            int i = Integer.parseInt(string);
+            return true;
+        } catch(NumberFormatException e) {
+            return false;
+        }
+    }
+
+    private class NotValidDataException extends Exception {
+        NotValidDataException (int messageRes) {
+            String message = getResources().getString(messageRes);
+            Toast.makeText(
+                    getApplicationContext(),
+                    getString(R.string.exception_qr, message),
+                    Toast.LENGTH_SHORT).show();
         }
     }
 

@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import com.example.qwerty.qrcodeejemplo.R;
 import com.example.qwerty.qrcodeejemplo.model.Piece;
 import com.example.qwerty.qrcodeejemplo.model.ProcessesList;
-import com.example.qwerty.qrcodeejemplo.view.Cronometro;
+import com.example.qwerty.qrcodeejemplo.view.CronometroActivity;
 
 public class ProcessesAdapter extends RecyclerView.Adapter<ProcessesAdapter.ProcessViewHolder>{
 
@@ -57,7 +57,7 @@ public class ProcessesAdapter extends RecyclerView.Adapter<ProcessesAdapter.Proc
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(mContext, Cronometro.class);
+                Intent intent = new Intent(mContext, CronometroActivity.class);
                 mContext.startActivity(intent);
                 ((Activity)mContext).finish();
             }

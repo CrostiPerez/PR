@@ -33,7 +33,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".view.ScanActivity" />
-        <activity android:name=".view.Cronometro" />
+        <activity android:name=".view.CronometroActivity" />
         <activity android:name=".view.PDFActivity" />
         <activity android:name=".view.MainActivity" />
         <activity android:name=".view.ProcessesMain" />

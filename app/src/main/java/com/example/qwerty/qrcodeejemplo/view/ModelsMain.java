@@ -54,7 +54,7 @@ public class ModelsMain extends AppCompatActivity {
     }
 
     private void getModels(RequestParams params) {
-        RestClient.get("get-models.php", params, new JsonHttpResponseHandler() {
+        RestClient.get(RestClient.FILE_GET_MODELS, params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
                 super.onSuccess(statusCode, headers, response);
@@ -97,7 +97,10 @@ public class ModelsMain extends AppCompatActivity {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                 super.onFailure(statusCode, headers, responseString, throwable);
-                Toast.makeText(getApplicationContext(), "Ups parece que ha habido un error", Toast.LENGTH_SHORT).show();
+                String message = getString(
+                        R.string.exception_network,
+                        getResources().getString(R.string.exception_get_models));
+                Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
             }
         });
     }

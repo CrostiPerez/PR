@@ -19,11 +19,12 @@ import com.google.android.gms.vision.barcode.BarcodeDetector;
 import java.io.IOException;
 
 public class ScanActivity extends AppCompatActivity {
-    SurfaceView cameraView;
-    BarcodeDetector barcodeDetector;
-    CameraSource cameraSource;
-    SurfaceHolder surfaceHolder;
+    public static final String EXTRA_BARCODE = "com.qwerty.example.barcode";
 
+    private SurfaceView cameraView;
+    private BarcodeDetector barcodeDetector;
+    private CameraSource cameraSource;
+    private SurfaceHolder surfaceHolder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,8 +37,10 @@ public class ScanActivity extends AppCompatActivity {
                 .setBarcodeFormats(Barcode.QR_CODE)
                 .build();
         if (!barcodeDetector.isOperational()) {
-            Toast.makeText(getApplicationContext(), "Sorry, couldn't setup that detector", Toast.LENGTH_SHORT).show();
-            this.finish();
+            String message = getString(R.string.exception_scanner,
+                    getString(R.string.exception_scanner_detector));
+            Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+            finish();
         }
         cameraSource = new CameraSource.Builder(this, barcodeDetector)
                 .setFacing(CameraSource.CAMERA_FACING_BACK)
@@ -78,14 +81,16 @@ public class ScanActivity extends AppCompatActivity {
             public void receiveDetections(Detector.Detections<Barcode> detections) {
                 final SparseArray<Barcode> barcodes = detections.getDetectedItems();
                 if (barcodes.size() > 0) {
-                    Intent intent = new Intent();
-                    intent.putExtra("barcode", barcodes.valueAt(0));
-                    setResult(RESULT_OK, intent);
-                    finish();
+                    sendResult(RESULT_OK, barcodes.valueAt(0));
                 }
             }
         });
     }
 
-
+    private void sendResult(int resultCode, Barcode barcode) {
+        Intent intent = new Intent();
+        intent.putExtra(EXTRA_BARCODE, barcode);
+        setResult(resultCode, intent);
+        finish();
+    }
 }

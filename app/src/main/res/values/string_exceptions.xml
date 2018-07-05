@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Scanner Exceptions -->
+    <string name="exception_scanner">Scanner error: %1$s</string>
+    <string name="exception_scanner_detector">Sorry, couldn\'t setup that detector</string>
+
+    <!-- QR Exceptions -->
+    <string name="exception_qr">Código QR no válido: %1$s</string>
+    <string name="exception_number_values">Faltan IDs en el código</string>
+    <string name="exception_not_number">El formato del código es incorrecto</string>
+
+    <!-- Network exceptions -->
+    <string name="exception_network">Network error: %1$s</string>
+    <string name="exception_get_model">Error al consultar el modelo</string>
+    <string name="exception_set_piece">Error al registrar la pieza</string>
+    <string name="exception_set_time">Error al registrar el tiempo</string>
+    <string name="exception_get_projects">Error al consultar los proyectos</string>
+    <string name="exception_get_models">Error al consultar los modelos</string>
+    <string name="exception_get_processes">Error al consultar los proyectos</string>
+
+    <!-- Login Exceptions -->
+    <string name="exception_user_credentials">Nombre de usuario o contraseña incorrectos</string>
+
+</resources>
