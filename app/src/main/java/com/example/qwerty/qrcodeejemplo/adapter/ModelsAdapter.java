@@ -20,8 +20,6 @@ public class ModelsAdapter extends RecyclerView.Adapter<ModelsAdapter.ModelsView
 
     private ArrayList<ModelsList> mModelsLists;
     private Context mContext;
-    private  String id;
-
 
     public class ModelsViewHolder extends RecyclerView.ViewHolder {
         public TextView modelID, modelName, modelDescription;
@@ -58,7 +56,7 @@ public class ModelsAdapter extends RecyclerView.Adapter<ModelsAdapter.ModelsView
             @Override
             public void onClick(View v) {
                 Model.saveOnSharedPreferences(
-                        Integer.parseInt(holder.modelID.getText().toString()),
+                        holder.modelID.getText().toString(),
                         holder.modelName.getText().toString(),
                         holder.modelDescription.getText().toString(),
                         mContext);

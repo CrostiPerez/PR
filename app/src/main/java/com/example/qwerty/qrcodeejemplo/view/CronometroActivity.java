@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.qwerty.qrcodeejemplo.R;
+import com.example.qwerty.qrcodeejemplo.database.DbSchema;
 import com.example.qwerty.qrcodeejemplo.database.RestClient;
 import com.example.qwerty.qrcodeejemplo.model.Model;
 import com.example.qwerty.qrcodeejemplo.model.User;
@@ -33,6 +34,8 @@ import static android.graphics.Color.BLACK;
 import static android.graphics.Color.RED;
 import static com.example.qwerty.qrcodeejemplo.R.drawable.ic_pause_black_24dp;
 import static com.example.qwerty.qrcodeejemplo.R.drawable.ic_play_arrow_black_24dp;
+import static com.example.qwerty.qrcodeejemplo.database.DbSchema.*;
+import static com.example.qwerty.qrcodeejemplo.database.RestClient.*;
 
 public class CronometroActivity extends AppCompatActivity {
     private Chronometer chronometer;
@@ -58,11 +61,7 @@ public class CronometroActivity extends AppCompatActivity {
         setContentView(R.layout.activity_cronometro);
 
         mModel = Model.fromSharedPreferences(this);
-
-        RequestParams params = new RequestParams();
-        params.put("model_id", mModel.getModelID() + "");
-        params.put("process_id", User.getProcessId(this));
-        setNewPiece(params);
+        setNewPiece(mModel.getModelID() + "", User.getProcessId(this));
 
         mTextView = findViewById(R.id.cronometroLabel);
         mTextView.setText(User.getProcessName(this));
@@ -167,9 +166,9 @@ public class CronometroActivity extends AppCompatActivity {
             JSONObject json = null;
             try {
                 json = new JSONObject();
-                json.put("process_id", User.getProcessId(CronometroActivity.this));
-                json.put("staff_id", User.getId(CronometroActivity.this));
-                json.put("time", time);
+                json.put(ProcessTable.Cols.ID, User.getProcessId(CronometroActivity.this));
+                json.put(UserTable.Cols.ID, User.getId(CronometroActivity.this));
+                json.put(PieceTable.Cols.Process.TIME, time);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -205,13 +204,10 @@ public class CronometroActivity extends AppCompatActivity {
 
     private void setTime(int id, JSONObject json, long muertes) {
         RequestParams params = new RequestParams();
-        params.put("muertes", muertes);
-        params.put("id", id);
-        params.put("json", json.toString());
-        Log.d("Cronometro", "Muertes: " + muertes);
-        Log.d("Cronometro", "ID: " + id);
-        Log.d("Cronometro", "Json: " + json);
-        RestClient.post(RestClient.FILE_SET_TIME, params, new JsonHttpResponseHandler() {
+        params.put(SetTimeScript.Params.$1, muertes);
+        params.put(SetTimeScript.Params.$2, id);
+        params.put(SetTimeScript.Params.$3, json.toString());
+        post(SetTimeScript.FILE_NAME, params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 super.onSuccess(statusCode, headers, response);
@@ -256,8 +252,11 @@ public class CronometroActivity extends AppCompatActivity {
         });
     }
 
-    private void setNewPiece(RequestParams params) {
-        RestClient.post(RestClient.FILE_SET_PIECE, params, new JsonHttpResponseHandler() {
+    private void setNewPiece(String modelId, String processId) {
+        RequestParams params = new RequestParams();
+        params.put(SetPieceScript.Params.$1, modelId);
+        params.put(SetPieceScript.Params.$2, processId);
+        post(SetPieceScript.FILE_NAME, params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 Piece.saveFromJSON(response, CronometroActivity.this);
@@ -279,7 +278,7 @@ public class CronometroActivity extends AppCompatActivity {
     private String getDialogMessage(JSONObject response) {
         String nextProcessName = null;
         try {
-            nextProcessName = response.getString("process_name");
+            nextProcessName = response.getString(ProcessTable.Cols.NAME);
         } catch (JSONException e) {
             e.printStackTrace();
         }

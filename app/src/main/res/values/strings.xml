@@ -60,10 +60,10 @@
 
     <!-- Dialog terminated piece -->
     <string name="dialog_title">Proceso terminado</string>
-    <string name="dialog_message">%1$s. ¿Quiere hacer otra pieza igual?</string>
+    <string name="dialog_message"> %1$s. ¿Quiere hacer otra pieza igual?</string>
     <string name="dialog_next_process">Siguiente proceso: </string>
     <string name="dialog_yes">Sí</string>
     <string name="dialog_no">No</string>
-    <string name="dialog_processes_terminated">No hay más procesos</string>
+    <string name="dialog_processes_terminated">No hay mas procesos</string>
 
 </resources>

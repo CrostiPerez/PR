@@ -8,6 +8,7 @@ import android.widget.Toast;
 
 import com.example.qwerty.qrcodeejemplo.R;
 import com.example.qwerty.qrcodeejemplo.adapter.ProcessesAdapter;
+import com.example.qwerty.qrcodeejemplo.database.DbSchema;
 import com.example.qwerty.qrcodeejemplo.database.RestClient;
 import com.example.qwerty.qrcodeejemplo.model.User;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -22,6 +23,9 @@ import java.util.ArrayList;
 import cz.msebera.android.httpclient.Header;
 import com.example.qwerty.qrcodeejemplo.model.Piece;
 import com.example.qwerty.qrcodeejemplo.model.ProcessesList;
+
+import static com.example.qwerty.qrcodeejemplo.database.DbSchema.*;
+import static com.example.qwerty.qrcodeejemplo.database.RestClient.*;
 
 public class ProcessesMain extends AppCompatActivity {
 
@@ -54,7 +58,7 @@ public class ProcessesMain extends AppCompatActivity {
     }
 
     private void getProcesses(RequestParams params) {
-        RestClient.get(RestClient.FILE_GET_PROCESSES, params, new JsonHttpResponseHandler() {
+        get(GetProcessesScript.FILE_NAME, params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
                 super.onSuccess(statusCode, headers, response);
@@ -62,8 +66,11 @@ public class ProcessesMain extends AppCompatActivity {
                 try {
                     for (int i = 0; i < response.length(); i ++) {
                         responseObj = response.getJSONObject(i);
-                        processesList.add(new ProcessesList(Integer.parseInt(responseObj.getString("process_id")),
-                                responseObj.getString("process_name")));
+                        processesList.add(new ProcessesList(Integer.parseInt(
+                                    responseObj.getString(ProcessTable.Cols.ID)),
+                                    responseObj.getString(ProcessTable.Cols.NAME)
+                                )
+                        );
                     }
                     adapter.setProcessesList(prepareData());
                     recyclerView.setAdapter(adapter);

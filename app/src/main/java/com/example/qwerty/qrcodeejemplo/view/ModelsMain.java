@@ -11,7 +11,9 @@ import android.widget.Toast;
 
 import com.example.qwerty.qrcodeejemplo.R;
 import com.example.qwerty.qrcodeejemplo.adapter.ModelsAdapter;
+import com.example.qwerty.qrcodeejemplo.database.DbSchema;
 import com.example.qwerty.qrcodeejemplo.database.RestClient;
+import com.example.qwerty.qrcodeejemplo.model.Model;
 import com.example.qwerty.qrcodeejemplo.model.ModelsList;
 import com.example.qwerty.qrcodeejemplo.model.Project;
 import com.example.qwerty.qrcodeejemplo.model.User;
@@ -23,6 +25,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import cz.msebera.android.httpclient.Header;
+
+import static com.example.qwerty.qrcodeejemplo.database.DbSchema.*;
+import static com.example.qwerty.qrcodeejemplo.database.RestClient.*;
 
 public class ModelsMain extends AppCompatActivity {
 
@@ -37,11 +42,7 @@ public class ModelsMain extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_models_main);
 
-        RequestParams params = new RequestParams();
-        params.put("project_id", Project.getProjectID(this));
-        params.put("user_id", User.getId(this));
-
-        getModels(params);
+        getModels(Project.getProjectID(this), User.getId(this));
 
         mRecyclerView = findViewById(R.id.modelsRecyclerView);
         mLayoutManager = new LinearLayoutManager(this);
@@ -53,8 +54,13 @@ public class ModelsMain extends AppCompatActivity {
 
     }
 
-    private void getModels(RequestParams params) {
-        RestClient.get(RestClient.FILE_GET_MODELS, params, new JsonHttpResponseHandler() {
+    private void getModels(int projectId, String userId) {
+
+        RequestParams params = new RequestParams();
+        params.put(GetModelsScript.Params.$1, projectId);
+        params.put(GetModelsScript.Params.$2, userId);
+
+        get(GetModelsScript.FILE_NAME, params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
                 super.onSuccess(statusCode, headers, response);
@@ -63,9 +69,9 @@ public class ModelsMain extends AppCompatActivity {
                     for (int i = 0; i < response.length(); i ++) {
                         responseObj = response.getJSONObject(i);
                         mModelsList.add(new ModelsList(
-                                        responseObj.getString("model_id"),
-                                        responseObj.getString("model_name"),
-                                        responseObj.getString("model_description")
+                                        responseObj.getString(ModelTable.Cols.ID),
+                                        responseObj.getString(ModelTable.Cols.NAME),
+                                        responseObj.getString(ModelTable.Cols.DESCRIPTION)
                                 )
                         );
                     }
@@ -82,9 +88,9 @@ public class ModelsMain extends AppCompatActivity {
                 JSONObject responseObj;
                 try {
                     mModelsList.add(new ModelsList(
-                                    response.getString("model_id"),
-                                    response.getString("model_name"),
-                                    response.getString("model_description")
+                                    response.getString(ModelTable.Cols.ID),
+                                    response.getString(ModelTable.Cols.NAME),
+                                    response.getString(ModelTable.Cols.DESCRIPTION)
                             )
                     );
                     mAdapter.setModelsList(mModelsList);

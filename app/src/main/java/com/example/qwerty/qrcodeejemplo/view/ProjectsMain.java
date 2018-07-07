@@ -7,7 +7,9 @@ import android.widget.Toast;
 
 import com.example.qwerty.qrcodeejemplo.R;
 import com.example.qwerty.qrcodeejemplo.adapter.ProjectsAdapter;
+import com.example.qwerty.qrcodeejemplo.database.DbSchema;
 import com.example.qwerty.qrcodeejemplo.database.RestClient;
+import com.example.qwerty.qrcodeejemplo.model.Project;
 import com.example.qwerty.qrcodeejemplo.model.ProjectsList;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -20,6 +22,9 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import cz.msebera.android.httpclient.Header;
+
+import static com.example.qwerty.qrcodeejemplo.database.DbSchema.*;
+import static com.example.qwerty.qrcodeejemplo.database.RestClient.*;
 
 public class ProjectsMain extends AppCompatActivity {
     private RecyclerView mRecyclerView;
@@ -45,7 +50,7 @@ public class ProjectsMain extends AppCompatActivity {
     }
 
     private void getProjects(RequestParams params) {
-        RestClient.get(RestClient.FILE_GET_PROJECTS, params, new JsonHttpResponseHandler() {
+        get(GetProjectsScript.FILE_NAME, params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
                 super.onSuccess(statusCode, headers, response);
@@ -54,12 +59,12 @@ public class ProjectsMain extends AppCompatActivity {
                     for (int i = 0; i < response.length(); i ++) {
                         responseObj = response.getJSONObject(i);
                         mProjectsList.add(new ProjectsList(
-                                responseObj.getString("project_id"),
-                                responseObj.getString("project_name"),
-                                responseObj.getString("project_status"),
-                                responseObj.getString("project_description"),
-                                new Date(responseObj.getString("project_startDate")),
-                                new Date(responseObj.getString("project_deadLine"))
+                                responseObj.getString(ProjectTable.Cols.ID),
+                                responseObj.getString(ProjectTable.Cols.NAME),
+                                responseObj.getString(ProjectTable.Cols.STATUS),
+                                responseObj.getString(ProjectTable.Cols.DESCRIPTION),
+                                new Date(responseObj.getString(ProjectTable.Cols.START_DATE)),
+                                new Date(responseObj.getString(ProjectTable.Cols.DEAD_LINE))
                                 )
                         );
                     }

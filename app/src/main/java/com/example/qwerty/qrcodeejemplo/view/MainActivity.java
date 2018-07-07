@@ -24,6 +24,7 @@ import org.json.JSONObject;
 import cz.msebera.android.httpclient.Header;
 
 import static android.view.View.VISIBLE;
+import static com.example.qwerty.qrcodeejemplo.database.RestClient.*;
 
 public class MainActivity extends AppCompatActivity {
     private Button btnScan;
@@ -105,11 +106,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void getModel(String projectId, String modelId, String userId) {
+
         RequestParams params = new RequestParams();
-        params.put("project_id", projectId);
-        params.put("model_id", modelId);
-        params.put("user_id", userId);
-        RestClient.get(RestClient.FILE_GET_MODEL, params, new JsonHttpResponseHandler() {
+        params.put(GetModelScript.Params.$1, projectId);
+        params.put(GetModelScript.Params.$2, modelId);
+        params.put(GetModelScript.Params.$3, userId);
+
+        get(GetModelScript.FILE_NAME, params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 super.onSuccess(statusCode, headers, response);

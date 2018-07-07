@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import com.example.qwerty.qrcodeejemplo.database.DbSchema;
 import com.example.qwerty.qrcodeejemplo.database.RestClient;
 import com.example.qwerty.qrcodeejemplo.model.User;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -13,6 +14,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 import cz.msebera.android.httpclient.Header;
+
+import static com.example.qwerty.qrcodeejemplo.database.DbSchema.*;
+import static com.example.qwerty.qrcodeejemplo.database.RestClient.*;
 
 public class SplashActivity extends AppCompatActivity {
 
@@ -29,10 +33,7 @@ public class SplashActivity extends AppCompatActivity {
 
         try {
             if (existUserCredentials()) {
-                RequestParams params = new RequestParams();
-                params.put("login_id", mUser);
-                params.put("login_password", mPassword);
-                validateCredentials(params);
+                validateCredentials(mUser, mPassword);
             } else {
                 Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
                 startActivity(intent);
@@ -47,8 +48,13 @@ public class SplashActivity extends AppCompatActivity {
         return mUser != null && mPassword != null && !mUser.equals("") && !mPassword.equals("");
     }
 
-    private void validateCredentials(RequestParams params) {
-        RestClient.post(RestClient.FILE_EXIST_USER, params, new JsonHttpResponseHandler() {
+    private void validateCredentials(String username, String password) {
+
+        RequestParams params = new RequestParams();
+        params.put(ExistUserScript.Params.$1, username);
+        params.put(ExistUserScript.Params.$2, password);
+
+        post(ExistUserScript.FILE_NAME, params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
                 super.onSuccess(statusCode, headers, response);
@@ -56,8 +62,8 @@ public class SplashActivity extends AppCompatActivity {
                 String responseID;
                 String responsePass;
                 try {
-                    responseID = response.getJSONObject(0).getString("login_id");
-                    responsePass = response.getJSONObject(0).getString("login_password");
+                    responseID = response.getJSONObject(0).getString(UserTable.Cols.ID);
+                    responsePass = response.getJSONObject(0).getString(UserTable.Cols.PASSWORD);
 
                     if (responseID.equals(mUser) && responsePass.equals(mPassword)) {
                         Intent intent = new Intent(SplashActivity.this, MainActivity.class);

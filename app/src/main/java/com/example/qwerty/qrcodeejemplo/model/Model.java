@@ -6,16 +6,19 @@ import android.content.SharedPreferences;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import static com.example.qwerty.qrcodeejemplo.database.DbSchema.*;
+
 /**
  * Created by qwerty on 26/05/18.
  */
 
 public class Model {
 
-    int mModelID;
+    private static final String MODEL_DATA = "model_data";
+    String mModelID;
     String mModelName;
 
-    public int getModelID() {
+    public String getModelID() {
         return mModelID;
     }
 
@@ -29,7 +32,7 @@ public class Model {
 
     String modelDescription;
 
-    public Model(int modelID, String modelName, String modelDescription) {
+    public Model(String modelID, String modelName, String modelDescription) {
         this.mModelID = modelID;
         this.mModelName = modelName;
         this.modelDescription = modelDescription;
@@ -37,9 +40,9 @@ public class Model {
 
     public static void saveFromJSON(JSONObject jsonObject, Context context) {
         try {
-            setModelID(jsonObject.getInt("model_id"), context);
-            setModelName(jsonObject.getString("model_name"), context);
-            setModelDescription(jsonObject.getString("model_description"), context);
+            setModelID(jsonObject.getString(ModelTable.Cols.ID), context);
+            setModelName(jsonObject.getString(ModelTable.Cols.NAME), context);
+            setModelDescription(jsonObject.getString(ModelTable.Cols.DESCRIPTION), context);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -58,38 +61,38 @@ public class Model {
         }
     }
 
-    public static void saveOnSharedPreferences(int projectID, String projectName, String modelDescription, Context context) {
-        setModelID(projectID, context);
-        setModelName(projectName, context);
+    public static void saveOnSharedPreferences(String modelID, String modelName, String modelDescription, Context context) {
+        setModelID(modelID, context);
+        setModelName(modelName, context);
         setModelDescription(modelDescription, context);
     }
 
-    public static int getModelID(Context context) {
-        SharedPreferences preferences = context.getSharedPreferences("model_data", Context.MODE_PRIVATE);
-        return preferences.getInt("model_data_1", -1);
+    public static String getModelID(Context context) {
+        SharedPreferences preferences = context.getSharedPreferences(MODEL_DATA, Context.MODE_PRIVATE);
+        return preferences.getString("model_data_1", null);
     }
 
-    public static void setModelID(int modelID, Context context) {
-        SharedPreferences preferences = context.getSharedPreferences("model_data", Context.MODE_PRIVATE);
+    public static void setModelID(String modelID, Context context) {
+        SharedPreferences preferences = context.getSharedPreferences(MODEL_DATA, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
-        editor.putInt("model_data_1", modelID);
-        editor.commit();
+        editor.putString("model_data_1", modelID);
+        editor.apply();
     }
 
     public static String getModelName(Context context) {
-        SharedPreferences preferences = context.getSharedPreferences("model_data", Context.MODE_PRIVATE);
+        SharedPreferences preferences = context.getSharedPreferences(MODEL_DATA, Context.MODE_PRIVATE);
         return preferences.getString("model_data_2", null);
     }
 
     public static void setModelName(String modelName, Context context) {
-        SharedPreferences preferences = context.getSharedPreferences("model_data", Context.MODE_PRIVATE);
+        SharedPreferences preferences = context.getSharedPreferences(MODEL_DATA, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString("model_data_2", modelName);
-        editor.commit();
+        editor.apply();
     }
 
     public static String getModelDescription(Context context) {
-        SharedPreferences preferences = context.getSharedPreferences("model_data", Context.MODE_PRIVATE);
+        SharedPreferences preferences = context.getSharedPreferences(MODEL_DATA, Context.MODE_PRIVATE);
         return preferences.getString("model_data_3", null);
     }
 
@@ -97,7 +100,7 @@ public class Model {
         SharedPreferences preferences = context.getSharedPreferences("model_data", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString("model_data_3", modelDescription);
-        editor.commit();
+        editor.apply();
     }
 
 }

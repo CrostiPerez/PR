@@ -3,10 +3,15 @@ package com.example.qwerty.qrcodeejemplo.model;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.example.qwerty.qrcodeejemplo.database.DbSchema;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import static com.example.qwerty.qrcodeejemplo.database.DbSchema.*;
+
 public class Project {
+    public static final String PROJECT_DATA = "project_data";
     int mProjectID;
     private String mProjectName;
 
@@ -33,8 +38,8 @@ public class Project {
 
     public static void saveFromJSON(JSONObject jsonObject, Context context) {
         try {
-            setProjectID(jsonObject.getInt("model_id"), context);
-            setProjectName(jsonObject.getString("model_name"), context);
+            setProjectID(jsonObject.getInt(ProjectTable.Cols.ID), context);
+            setProjectName(jsonObject.getString(ProjectTable.Cols.NAME), context);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -59,24 +64,24 @@ public class Project {
 
 
     public static int getProjectID(Context context) {
-        SharedPreferences preferences = context.getSharedPreferences("project_data", Context.MODE_PRIVATE);
+        SharedPreferences preferences = context.getSharedPreferences(PROJECT_DATA, Context.MODE_PRIVATE);
         return preferences.getInt("project_data_1", -1);
     }
 
     public static void setProjectID(int modelID, Context context) {
-        SharedPreferences preferences = context.getSharedPreferences("project_data", Context.MODE_PRIVATE);
+        SharedPreferences preferences = context.getSharedPreferences(PROJECT_DATA, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
         editor.putInt("project_data_1", modelID);
         editor.apply();
     }
 
     public static String getProjectName(Context context) {
-        SharedPreferences preferences = context.getSharedPreferences("project_data", Context.MODE_PRIVATE);
+        SharedPreferences preferences = context.getSharedPreferences(PROJECT_DATA, Context.MODE_PRIVATE);
         return preferences.getString("project_data_2", null);
     }
 
     public static void setProjectName(String modelName, Context context) {
-        SharedPreferences preferences = context.getSharedPreferences("project_data", Context.MODE_PRIVATE);
+        SharedPreferences preferences = context.getSharedPreferences(PROJECT_DATA, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString("project_data_2", modelName);
         editor.apply();
