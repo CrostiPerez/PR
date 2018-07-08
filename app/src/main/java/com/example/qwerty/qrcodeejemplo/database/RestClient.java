@@ -39,10 +39,17 @@ public class RestClient {
 
     public static final class GetProcessesScript {
         public static final String FILE_NAME = "get-processes.php";
+
+        public static final class Params {
+
+        }
     }
 
     public static final class GetProjectsScript {
         public static final String FILE_NAME = "get-projects.php";
+
+        public static final class Params {
+        }
     }
 
     public static final class LoginScript {

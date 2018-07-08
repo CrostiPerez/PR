@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">PR Calibradores</string>
+    <string name="app_name">Calibradores</string>
 
     <!--Activity main-->
     <string name="PRImage">PR</string>
